@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
-#include <ctime>
+#include <time.h>
 
 
 extern time_t time();
