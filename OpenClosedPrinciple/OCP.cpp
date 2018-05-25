@@ -61,7 +61,7 @@ struct BetterFilter : IFilter <Product>
 {
         typedef std::vector<Product*> Items;
 
-        virtual std::vector<Product*> filter(std::vector<Product*> items, ISpecification<Product*>& spec)
+        virtual std::vector<Product*> filter(std::vector<Product*> items, ISpecification<Product>& spec)
         {
         Items result;
         for (auto& p: items)
@@ -101,15 +101,14 @@ template <typename T> struct AndSpecification: ISpecification<T>
 
 int main()
 {
-    Product apple{"Apple", Color::Green, Size::Small};
-    Product tree{"Tree", Color::Green, Size::Large};
-    Product house{"Tree", Color::Green, Size::Large};
+    Product apple{"Apple",Size::Small, Color::Green };
+    Product tree{"Tree", Size::Large, Color::Green };
+    Product house{"Tree", Size::Large, Color::Green };
 
 
     std::vector<Product *> all{&apple,&tree, &house};
     BetterFilter bf;
     ColorSpecification green(Color::Green);
-
 
     auto green_things = bf.filter(all, green);
     for (auto &x: green_things)
