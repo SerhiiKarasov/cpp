@@ -39,7 +39,7 @@ int main() {
 	// Generate requests in a continuous loop until terminated with SIGINT or
 	// limit has been reached.
 	int cycles = 0;
-	Request* rq = 0;
+	Request* rq = nullptr;
 	while (!signal_caught && cycles < 50) {
 		rq = new Request();
 		rq->setValue(cycles);
