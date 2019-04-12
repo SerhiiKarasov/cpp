@@ -2,7 +2,7 @@ GCC := g++
 
 OUTPUT := ch01_mt_example
 SOURCES := $(wildcard *cpp)
-CCFLAGS := -std=c++11 -pthread
+CCFLAGS := -std=c++11 -pthread -g3
 
 all: $(OUTPUT)
 

@@ -53,6 +53,10 @@ int main() {
 	// Cleanup.
 	Dispatcher::stop();
 	cout << "Clean-up done.\n";
+	//cleanup mem leak
+	// use smart pointers
+	// move to classes
 	
+
 	return 0;
 }

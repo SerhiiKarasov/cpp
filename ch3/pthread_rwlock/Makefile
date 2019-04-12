@@ -2,7 +2,7 @@ GCC := g++
 
 OUTPUT := ch03_pthread_example
 SOURCES := $(wildcard *cpp)
-CCFLAGS := -std=c++11 -pthread -fno-permissive
+CCFLAGS := -std=c++11 -pthread -g3 -fno-permissive
 
 all: $(OUTPUT)
 
