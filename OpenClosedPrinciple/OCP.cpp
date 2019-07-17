@@ -96,11 +96,29 @@ struct ColorSpecification : ISpecification<Product>
     }
 };
 
+struct SizeSpecification : ISpecification<Product>
+{
+    Size size;
+    explicit SizeSpecification(const Size size)
+        : size{size}
+    {
+    }
+
+    bool is_satisfied(Product *item) override
+    {
+        return item->size == size;
+    }
+};
 template <typename T>
 struct AndSpecification : ISpecification<T>
 {
     ISpecification<T> &first;
-    ISpecification<T &> second;
+    ISpecification<T> &second;
+    AndSpecification(ISpecification<T> &first, ISpecification<T> &second)
+        : first{first},
+          second{second}
+    {
+    }
 
     bool is_satisfied(T *item) override
     {
@@ -123,6 +141,13 @@ int main()
     {
         std::cout << x->name << " is green" << std::endl;
     }
-
+    SizeSpecification big(Size::Large);
+    AndSpecification<Product> green_and_big{big,green};
+    
+    auto green_and_big_things = bf.filter(all, green_and_big);
+    for (auto &x : green_and_big_things)
+    {
+        std::cout << x->name << " is green and big" << std::endl;
+    }
     return 0;
 }
