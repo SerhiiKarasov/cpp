@@ -6,7 +6,7 @@
 #include <random>
 #include <numeric>
 #include <functional>
-
+#include <set>
 template <class Iter>
 void merge_sort(Iter first, Iter last)
 {
@@ -194,9 +194,10 @@ int main()
     {
         std::cout << *it << " ";
     }
-    //https://en.cppreference.com/w/cpp/algorithm/mismatch. Returns the first mismatching pair of elements from two ranges: one defined by [first1, last1) and another defined by [first2,last2). If last2 is not provided (overloads (1-4)), it denotes first2 + (last1 - first1). 
+    //https://en.cppreference.com/w/cpp/algorithm/mismatch. Returns the first mismatching pair of elements from two ranges: one defined by [first1, last1) and another defined by [first2,last2). If last2 is not provided (overloads (1-4)), it denotes first2 + (last1 - first1).
     auto mism = std::mismatch(numbers.begin(), numbers.end(), numbers.rbegin());
-    std::cout <<std::endl<< *mism.first << *mism.second<< std::endl;
+    std::cout << std::endl
+              << *mism.first << *mism.second << std::endl;
 
     //SEARCHING A VALUE
     //in not sorted collection
@@ -209,27 +210,135 @@ int main()
     //partially ordered with respect to value, i.e. it must satisfy all of the following requirements:
     //partitioned with respect to element < value or comp(element, value) (that is, all elements for which the expression is true precedes all elements for which the expression is false)
     //partitioned with respect to !(value < element) or !comp(value, element)
-    //for all elements, if element < value or comp(element, value) is true then !(value < element) or !comp(value, element) is also true 
-    //A fully-sorted range meets these criteria. 
-    //https://en.cppreference.com/w/cpp/algorithm/equal_range. Returns a range containing all elements equivalent to value in the range [first, last). 
+    //for all elements, if element < value or comp(element, value) is true then !(value < element) or !comp(value, element) is also true
+    //A fully-sorted range meets these criteria.
+    //https://en.cppreference.com/w/cpp/algorithm/equal_range. Returns a range containing all elements equivalent to value in the range [first, last).
     std::sort(numbers.begin(), numbers.end());
-    auto per = std::equal_range(numbers.begin(), numbers.end(), 2);//actually may be implemented via lower and upper bound 
+    auto per = std::equal_range(numbers.begin(), numbers.end(), 2); //actually may be implemented via lower and upper bound
     std::cout << *(per).first << *(per).second << std::endl;
-    //https://en.cppreference.com/w/cpp/algorithm/lower_bound. Returns an iterator pointing to the first element in the range [first, last) that is not less than (i.e. greater or equal to) value, or last if no such element is found. 
+    //https://en.cppreference.com/w/cpp/algorithm/lower_bound. Returns an iterator pointing to the first element in the range [first, last) that is not less than (i.e. greater or equal to) value, or last if no such element is found.
     auto plb = std::lower_bound(numbers.begin(), numbers.end(), 2);
     std::cout << *plb << std::endl;
-    //https://en.cppreference.com/w/cpp/algorithm/upper_bound. Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found. 
+    //https://en.cppreference.com/w/cpp/algorithm/upper_bound. Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found.
     auto pub = std::upper_bound(numbers.begin(), numbers.end(), 2);
     std::cout << *pub << std::endl;
-    //https://en.cppreference.com/w/cpp/algorithm/binary_search. Checks if an element equivalent to value appears within the range [first, last). Should be at least partially sorted. 
-    std::cout <<std::binary_search(numbers.begin(), numbers.end(), 2) <<std::endl;
-    
+    //https://en.cppreference.com/w/cpp/algorithm/binary_search. Checks if an element equivalent to value appears within the range [first, last). Should be at least partially sorted.
+    std::cout << std::binary_search(numbers.begin(), numbers.end(), 2) << std::endl;
+
     //SEARCHING A RANGE
     //https://en.cppreference.com/w/cpp/algorithm/search.  Searches for the first occurrence of the sequence of elements [s_first, s_last) in the range [first, last).
-    std::cout<< *(std::search(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
-    //https://en.cppreference.com/w/cpp/algorithm/find_end. Searches for the last occurrence of the sequence [s_first, s_last) in the range [first, last). 
-    std::cout<< *(std::find_end(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
-    //https://en.cppreference.com/w/cpp/algorithm/find_first_of.Searches the range [first, last) for any of the elements in the range [s_first, s_last). 
-    std::cout<< *(std::find_first_of(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
+    std::cout << *(std::search(numbers.begin(), numbers.end(), numbers.begin(), numbers.end())) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/find_end. Searches for the last occurrence of the sequence [s_first, s_last) in the range [first, last).
+    std::cout << *(std::find_end(numbers.begin(), numbers.end(), numbers.begin(), numbers.end())) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/find_first_of.Searches the range [first, last) for any of the elements in the range [s_first, s_last).
+    std::cout << *(std::find_first_of(numbers.begin(), numbers.end(), numbers.begin(), numbers.end())) << std::endl;
 
+    //https://en.cppreference.com/w/cpp/algorithm/min_element. Finds the smallest element in the range [first, last).
+    std::cout << *(std::min_element(numbers.begin(), numbers.end())) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/max_element Finds the greatest element in the range [first, last).
+    std::cout << *(std::max_element(numbers.begin(), numbers.end())) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/minmax_element. Finds the smallest and greatest element in the range [first, last).
+    std::cout << *(std::minmax_element(numbers.begin(), numbers.end()).first) << " " << *(std::minmax_element(numbers.begin(), numbers.end()).second) << std::endl;
+
+    //ALGORITHMS ON SETS
+    //std::set is an associative container that contains a sorted set of unique objects of type Key. Sorting is done using the key comparison function Compare. Search, removal, and insertion operations have logarithmic complexity. Sets are usually implemented as red-black trees.
+    //https://en.cppreference.com/w/cpp/algorithm/set_difference. Copies the elements from the sorted range [first1, last1) which are not found in the sorted range [first2, last2) to the range beginning at d_first.
+    std::set<int> numbers1{1, 2, 3, 4, 5};
+    std::set<int> numbers2{1, 2, 3, 4, 6};
+    std::set<int> diff{};
+    //is a linear time complexity
+    std::set_difference(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end(), std::inserter(diff, diff.begin()));
+    for (auto i : diff)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/set_union.Copies the elements from the sorted range [first1, last1) which are not found in the sorted range [first2, last2) to the range beginning at d_first.
+    std::set_union(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end(), std::inserter(diff, diff.begin()));
+    for (auto i : diff)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/set_symmetric_difference. Computes symmetric difference of two sorted ranges: the elements that are found in either of the ranges, but not in both of them are copied to the range beginning at d_first. The resulting range is also sorted.
+    std::set_symmetric_difference(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end(), std::inserter(diff, diff.begin()));
+    for (auto i : diff)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/set_intersection. Constructs a sorted range beginning at d_first consisting of elements that are found in both sorted ranges [first1, last1) and [first2, last2). If some element is found m times in [first1, last1) and n times in [first2, last2), the first std::min(m, n) elements will be copied from the first range to the destination range. The order of equivalent elements is preserved. The resulting range cannot overlap with either of the input ranges.
+    std::set<int> diff1{};
+    std::set_intersection(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end(), std::inserter(diff1, diff1.begin()));
+    for (auto i : diff1)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/includes. Returns true if the sorted range [first2, last2) is a subsequence of the sorted range [first1, last1). (A subsequence need not be contiguous.)
+    std::cout << std::includes(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end()) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/merge. Merges two sorted ranges [first1, last1) and [first2, last2) into one sorted range beginning at d_first.
+    std::vector<int> dst;
+    std::merge(numbers1.begin(), numbers1.end(), numbers2.begin(), numbers2.end(), std::back_inserter(dst));
+    for (auto i : dst)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+
+    //MOVERS
+    //https://en.cppreference.com/w/cpp/algorithm/copy. Copies the elements in the range, defined by [first, last), to another range beginning at d_first.
+    std::copy(numbers.begin(), numbers.end(), std::inserter(numbers1, numbers1.begin()));
+    for (auto i : numbers)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/move. Copies the elements in the range, defined by [first, last), to another range beginning at d_first.
+    std::move(numbers.begin(), numbers.end(), std::inserter(numbers1, numbers1.begin()));
+    for (auto i : numbers1)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    for (auto i : numbers)
+        std::cout << i << ' ';
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/copy_backward. Copies the elements from the range, defined by [first, last), to another range ending at d_last. The elements are copied in reverse order (the last element is copied first), but their relative order is preserved.
+    std::vector<int> from_vector;
+    for (int i = 0; i < 10; i++)
+    {
+        from_vector.push_back(i);
+    }
+    std::vector<int> to_vector(15);
+    std::copy_backward(from_vector.begin(), from_vector.end(), to_vector.end());
+    std::cout << "to_vector contains: ";
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    //VALUE MODIFIERS
+    //changes values inside of the collection
+    //https://en.cppreference.com/w/cpp/algorithm/fill.  Assigns the given value to the elements in the range [first, last).
+    std::fill(to_vector.begin(), to_vector.end(), -1);
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/generate. Assigns each element in range [first, last) a value generated by the given function object g.
+    std::generate(to_vector.begin(), to_vector.end(), [n = 0]() mutable { return n++; });
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/iota. Fills the range [first, last) with sequentially increasing values, starting with value and repetitively evaluating ++value
+    std::iota(to_vector.begin(), to_vector.end(), -1);
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/replace. Replaces all elements satisfying specific criteria with new_value in the range [first, last).
+    std::replace(to_vector.begin(), to_vector.end(), 8, 88);
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    std::replace_if(to_vector.begin(), to_vector.end(), std::bind(std::less<int>(), std::placeholders::_1, 5), 55);
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
 }
