@@ -199,5 +199,37 @@ int main()
     std::cout <<std::endl<< *mism.first << *mism.second<< std::endl;
 
     //SEARCHING A VALUE
-    //
+    //in not sorted collection
+    //https://en.cppreference.com/w/cpp/algorithm/find. Returns the first element in the range [first, last) that satisfies specific criteria: 1) find searches for an element equal to value 3) find_if searches for an element for which predicate p returns true 5) find_if_not searches for an element for which predicate q returns false }
+    std::cout << *(std::find(std::begin(numbers), std::end(numbers), 1)) << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/adjacent_find.Searches the range [first, last) for two consecutive identical elements. 1) Elements are compared using operator==. 3) Elements are compared using the given binary predicate p.
+    std::cout << *(std::adjacent_find(numbers.begin(), numbers.end())) << std::endl;
+    //in a sorted collection
+    //some algos require collection to be at least partially sorted in respect to value
+    //partially ordered with respect to value, i.e. it must satisfy all of the following requirements:
+    //partitioned with respect to element < value or comp(element, value) (that is, all elements for which the expression is true precedes all elements for which the expression is false)
+    //partitioned with respect to !(value < element) or !comp(value, element)
+    //for all elements, if element < value or comp(element, value) is true then !(value < element) or !comp(value, element) is also true 
+    //A fully-sorted range meets these criteria. 
+    //https://en.cppreference.com/w/cpp/algorithm/equal_range. Returns a range containing all elements equivalent to value in the range [first, last). 
+    std::sort(numbers.begin(), numbers.end());
+    auto per = std::equal_range(numbers.begin(), numbers.end(), 2);//actually may be implemented via lower and upper bound 
+    std::cout << *(per).first << *(per).second << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/lower_bound. Returns an iterator pointing to the first element in the range [first, last) that is not less than (i.e. greater or equal to) value, or last if no such element is found. 
+    auto plb = std::lower_bound(numbers.begin(), numbers.end(), 2);
+    std::cout << *plb << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/upper_bound. Returns an iterator pointing to the first element in the range [first, last) that is greater than value, or last if no such element is found. 
+    auto pub = std::upper_bound(numbers.begin(), numbers.end(), 2);
+    std::cout << *pub << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/binary_search. Checks if an element equivalent to value appears within the range [first, last). Should be at least partially sorted. 
+    std::cout <<std::binary_search(numbers.begin(), numbers.end(), 2) <<std::endl;
+    
+    //SEARCHING A RANGE
+    //https://en.cppreference.com/w/cpp/algorithm/search.  Searches for the first occurrence of the sequence of elements [s_first, s_last) in the range [first, last).
+    std::cout<< *(std::search(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/find_end. Searches for the last occurrence of the sequence [s_first, s_last) in the range [first, last). 
+    std::cout<< *(std::find_end(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/find_first_of.Searches the range [first, last) for any of the elements in the range [s_first, s_last). 
+    std::cout<< *(std::find_first_of(numbers.begin(), numbers.end(), numbers.begin(), numbers.end()))<< std::endl;
+
 }
