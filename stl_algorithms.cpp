@@ -7,6 +7,15 @@
 #include <numeric>
 #include <functional>
 #include <set>
+#include <memory>
+#include <new>
+
+struct Tracer
+{
+    int value;
+    ~Tracer() { std::cout << value << " destructed\n"; }
+};
+
 template <class Iter>
 void merge_sort(Iter first, Iter last)
 {
@@ -490,4 +499,70 @@ int main()
     for (int &x : remove_copy_to)
         std::cout << ' ' << x;
     std::cout << std::endl;
+
+    //TRANSFORM
+    //https://en.cppreference.com/w/cpp/algorithm/transform. std::transform applies the given function to a range and stores the result in another range, beginning at d_first.
+    std::transform(remove_copy_from.begin(), remove_copy_from.end(), std::back_inserter(remove_copy_to), [](int c) -> int { return c + 1; });
+    for (int &x : remove_copy_from)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    for (int &x : remove_copy_to)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    std::vector<int> a1{1, 2, 3, 4, 5};
+    std::vector<int> a2{1, 1, 1, 1, 1};
+    std::vector<int> b{};
+    //that is analog of zip in python
+    std::transform(a1.begin(), a1.end(), a2.begin(), std::back_inserter(b), [](int a11, int a12) -> int { return a11 + 1 + a12; });
+    for (int &x : a1)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    for (int &x : a2)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    for (int &x : b)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+
+    //FOR_EACH
+    //https://en.cppreference.com/w/cpp/algorithm/for_each.  Applies the given function object f to the result of dereferencing every iterator in the range [first, last), in order.
+    std::for_each(b.begin(), b.end(), [](const int value) { std::cout << value << std::endl; }); //function should return void, for-each is made to perform side-effects
+
+    //RAW MEMORY
+    //each of fill, move, copy are using assignment operator, that's mean that object is already created.
+    //if we have chunks of memory, but still object is not created, we can use uninitialized_fill, _copy, _move as they are using constructors.
+    //https://en.cppreference.com/w/cpp/memory/uninitialized_fill.  Copies the given value to an uninitialized memory area, defined by the range [first, last) as if by for (; first != last; ++first)
+    //   ::new (static_cast<void*>(std::addressof(*first)))
+    //       typename std::iterator_traits<ForwardIt>::value_type(value);
+    std::uninitialized_fill(b.begin(), b.end(), 2);
+    std::cout << std::endl;
+    for (int &x : b)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/memory/destroy. Destroys the objects in the range [first, last), as if by for (; first != last; ++first)   std::destroy_at(std::addressof(*first));
+    alignas(Tracer) unsigned char buffer[sizeof(Tracer) * 8];
+    for (int i = 0; i < 8; ++i)
+        new (buffer + sizeof(Tracer) * i) Tracer{i}; //manually construct objects
+    auto ptr = std::launder(reinterpret_cast<Tracer *>(buffer));
+    std::destroy(ptr, ptr + 8);
+    //uninitialized_copy,
+    //uninitialized_move
+
+    //_N
+    //https://en.cppreference.com/w/cpp/algorithm/fill_n. Assigns the given value to the first count elements in the range beginning at first if count > 0. Does nothing otherwise.
+    std::fill_n(to_vector.begin(), 2, -1);
+    for (int &x : to_vector)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    //copy_n
+    //fill_n
+    //generate_n
+    //search_n
+    //for_each_n
+    //uninitialized_copy_n
+    //uninitialized_fill_n
+    //uninitialized_move_n
+    //unitialized_default_construct_n
+    //unitialized_value_construct_n
+    //destroy_n
 }
