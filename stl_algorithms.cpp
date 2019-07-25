@@ -19,6 +19,8 @@ void merge_sort(Iter first, Iter last)
     }
 }
 
+bool IsOdd(int i) { return ((i % 2) == 1); }
+
 int main()
 {
     std::vector<int> numbers{9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10};
@@ -340,5 +342,152 @@ int main()
     {
         std::cout << i << " ";
     }
+    std::cout << std::endl;
+
+    //STRUCTURE CHANGERS
+    //https://en.cppreference.com/w/cpp/algorithm/remove. Removes all elements satisfying specific criteria from the range [first, last) and returns a past-the-end iterator for the new end of the range.
+    std::remove(to_vector.begin(), to_vector.end(), 55); //it can't change the size of the collection, it could change only value, those who were removed are now in undefined state, call erase every time
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    to_vector.erase(std::remove(to_vector.begin(), to_vector.end(), 10), to_vector.end());
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //std::erase(to_vector, 11); it may be added to stl
+    //https://en.cppreference.com/w/cpp/algorithm/unique. Eliminates all but the first element from every consecutive group of equivalent elements from the range [first, last) and returns a past-the-end iterator for the new logical end of the range.
+    std::sort(to_vector.begin(), to_vector.end());
+    auto iterator_to_last = std::unique(to_vector.begin(), to_vector.end());
+    to_vector.erase(iterator_to_last, to_vector.end());
+    for (auto i : to_vector)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //std::unique(to_vector); it may be added to stl
+
+    //*_copy :
+    //https://en.cppreference.com/w/cpp/algorithm/remove_copy. Copies elements from the range [first, last), to another range beginning at d_first, omitting the elements which satisfy specific criteria. Source and destination ranges cannot overlap.
+    std::vector<int> remove_copy_from{1, 2, 3, 4, 5, 6, 66, 7, 55};
+    std::vector<int> remove_copy_to(10, 0); //because of iterators usage we need target collection to have enough size for elements would be copied
+    //another way is to use back_inserter
+    std::remove_copy(remove_copy_from.begin(), remove_copy_from.end(), remove_copy_to.begin(), 55); //it can't change the size of the collection, it could change only value, those who were removed are now in undefined state, call erase every time
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/unique_copy. Copies the elements from the range [first, last), to another range beginning at d_first in such a way that there are no consecutive equal elements. Only the first element of each group of equal elements is copied.
+    std::unique_copy(remove_copy_from.begin(), remove_copy_from.end(), std::back_inserter(remove_copy_to));
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/reverse_copy.  Copies the elements from the range [first, last) to another range beginning at d_first in such a way that the elements in the new range are in reverse order.
+    std::reverse_copy(remove_copy_from.begin(), remove_copy_from.end(), std::back_inserter(remove_copy_to));
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/rotate_copy.  Copies the elements from the range [first, last), to another range beginning at d_first in such a way, that the element n_first becomes the first element of the new range and n_first - 1 becomes the last element.
+    auto pivot = std::find(remove_copy_from.begin(), remove_copy_from.end(), 3);
+    std::rotate_copy(remove_copy_from.begin(), pivot, remove_copy_from.end(), remove_copy_to.begin());
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/replace_copy. Copies the elements from the range [first, last) to another range beginning at d_first replacing all elements satisfying specific criteria with new_value. The source and destination ranges cannot overlap.
+    std::replace_copy(remove_copy_from.begin(), remove_copy_from.end(), std::back_inserter(remove_copy_to), 0, 1);
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/partition_copy.  Copies the elements from the range [first, last) to two different ranges depending on the value returned by the predicate p. The elements that satisfy the predicate p are copied to the range beginning at d_first_true. The rest of the elements are copied to the range beginning at d_first_false. The behavior is undefined if the input range overlaps either of the output ranges.
+    std::vector<int> values_true{};
+    std::vector<int> values_false{};
+    std::partition_copy(remove_copy_from.begin(), remove_copy_from.end(), std::back_inserter(values_true), std::back_inserter(values_false), std::bind(std::less<int>(), std::placeholders::_1, 5));
+    for (auto i : remove_copy_from)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    for (auto i : values_true)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    for (auto i : values_false)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/partial_sort_copy. Sorts some of the elements in the range [first, last) in ascending order, storing the result in the range [d_first, d_last).
+    std::partial_sort_copy(remove_copy_from.begin(), remove_copy_from.end(), remove_copy_to.begin(), remove_copy_to.end(), std::greater<int>());
+    for (auto i : remove_copy_to)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    //_if:
+    for (auto i : remove_copy_from)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //http://www.cplusplus.com/reference/algorithm/find_if.  Returns an iterator to the first element in the range [first,last) for which pred returns true. If no such element is found, the function returns last.
+    auto result = std::find_if(std::begin(remove_copy_from), std::end(remove_copy_from), [](int i) { return i % 2; });
+    if (result != std::end(remove_copy_from))
+    {
+        std::cout << "remove_copy_from's first element for which predicate is true: " << *result << '\n';
+    }
+    //http://www.cplusplus.com/reference/algorithm/find_if_not.  Returns an iterator to the first element in the range [first,last) for which pred returns false. If no such element is found, the function returns last.
+    auto result1 = std::find_if_not(std::begin(remove_copy_from), std::end(remove_copy_from), [](int i) { return i % 2; });
+    if (result1 != std::end(remove_copy_from))
+    {
+        std::cout << "remove_copy_from's first element for which predicate is false: " << *result1 << '\n';
+    }
+    //https://en.cppreference.com/w/cpp/algorithm/count. Counts elements for which predicate p returns true.
+    int num_items3 = std::count_if(remove_copy_from.begin(), remove_copy_from.end(), [](int i) { return i % 3 == 0; });
+    std::cout << "remove_copy_from contains elements that satisfies predicate: " << num_items3 << '\n';
+    //https://en.cppreference.com/w/cpp/algorithm/remove. Removes all elements for which predicate p returns true.
+    remove_copy_from.erase(std::remove_if(remove_copy_from.begin(), remove_copy_from.end(), [](int i) { return i % 3 == 0; }), remove_copy_from.end());
+    for (auto i : remove_copy_from)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/replace. Replaces all elements for which predicate p returns true.
+    std::replace_if(remove_copy_from.begin(), remove_copy_from.end(), std::bind(std::less<int>(), std::placeholders::_1, 5), 55);
+    for (auto i : remove_copy_from)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/replace_copy. Replaces all elements for which predicate p returns true.
+    std::replace_copy_if(remove_copy_from.begin(), remove_copy_from.end(), std::ostream_iterator<int>(std::cout, " "), [](int n) { return n > 5; }, 99);
+    for (auto i : remove_copy_from)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/copy.  Only copies the elements for which the predicate pred returns true. The relative order of the elements that are copied is preserved. The behavior is undefined if the source and the destination ranges overlap.
+    auto it = std::copy_if(remove_copy_from.begin(), remove_copy_from.end(), remove_copy_to.begin(), [](int i) { return !(i < 0); });
+    remove_copy_to.resize(std::distance(remove_copy_to.begin(), it)); // shrink container to new size
+    for (int &x : remove_copy_to)
+        std::cout << ' ' << x;
+    std::cout << std::endl;
+    //https://en.cppreference.com/w/cpp/algorithm/remove_copy.  Ignores all elements for which predicate p returns true.
+    std::remove_copy_if(remove_copy_from.begin(), remove_copy_from.end(), remove_copy_to.begin(), IsOdd);
+    for (int &x : remove_copy_to)
+        std::cout << ' ' << x;
     std::cout << std::endl;
 }
