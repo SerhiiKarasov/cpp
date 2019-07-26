@@ -545,9 +545,25 @@ int main()
         new (buffer + sizeof(Tracer) * i) Tracer{i}; //manually construct objects
     auto ptr = std::launder(reinterpret_cast<Tracer *>(buffer));
     std::destroy(ptr, ptr + 8);
-    //uninitialized_copy,
-    //uninitialized_move
-
+    //https://en.cppreference.com/w/cpp/memory/uninitialized_copy, Copies elements from the range [first, last) to an uninitialized memory area
+    const char *v[] = {"Some", "example"};
+    auto sz = std::size(v);
+    if(void *pbuf = std::aligned_alloc(alignof(std::string), sizeof(std::string) * sz))
+    {
+        try
+        {
+            auto first = static_cast<std::string*>(pbuf);
+            auto last = std::uninitialized_copy(std::begin(v), std::end(v), first);
+ 
+            for (auto it = first; it != last; ++it)
+                std::cout << *it << '_';
+            std::destroy(first, last);
+        }
+        catch(...) {}
+        std::free(pbuf);
+    }    
+    //https://en.cppreference.com/w/cpp/memory/uninitialized_move
+    
     //_N
     //https://en.cppreference.com/w/cpp/algorithm/fill_n. Assigns the given value to the first count elements in the range beginning at first if count > 0. Does nothing otherwise.
     std::fill_n(to_vector.begin(), 2, -1);
