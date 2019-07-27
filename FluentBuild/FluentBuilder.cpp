@@ -11,24 +11,13 @@ using namespace std;
 
 class HtmlBuilder;
 
-std::string make_html()
-{
-    //<p>hello</p>
-    auto text = "hello";
-    string output;
-    output += "<p>";
-    output += text;
-    output += "</p>";
-    return output;
-}
-
 struct HtmlElement
 {
     string name;
     string text;
     vector<HtmlElement> elements;
     const size_t indent_size = 2;
-    HtmlElement(){};
+    HtmlElement() {}
     HtmlElement(const string &name, const string &text)
         : name{name},
           text{text}
@@ -62,27 +51,29 @@ struct HtmlElement
 //builder class
 struct HtmlBuilder
 {
-    HtmlBuilder(string root_name)
+    HtmlBuilder(std::string root_name)
     {
         root.name = root_name;
     }
-    HtmlBuilder *add_child_2(string child_name, string child_text)
-    {
-        HtmlElement e{child_name, child_text};
-        root.elements.emplace_back(e);
-        return this;
-    }
-    HtmlBuilder &add_child(string child_name, string child_text)
+
+    HtmlBuilder &add_child(std::string child_name, std::string child_text)
     {
         HtmlElement e{child_name, child_text};
         root.elements.emplace_back(e);
         return *this;
     }
+
+    HtmlBuilder *add_child_2(std::string child_name, std::string child_text)
+    {
+        HtmlElement e{child_name, child_text};
+        root.elements.emplace_back(e);
+        return this;
+    }
     //in order to convert from builder to htmlelement
     operator HtmlElement() { return root; }
     HtmlElement root;
 
-    string str() const
+    std::string str() const
     {
         return root.str();
     }
@@ -95,19 +86,17 @@ HtmlBuilder HtmlElement::build(std::string root_name)
 
 int main()
 {
-    std::cout << make_html() << std::endl;
-    //what about <ul><li>hello</li></ul><li>world</li> ?
-    //this is stupid
 
-    //build is cool
     HtmlBuilder builder{"ul"};
     builder.add_child("li", "hello").add_child("li1", "hello1").add_child("li2", "hello2");
 
     HtmlElement e = HtmlElement::build("ul").add_child("li1", "hello1").add_child("li2", "hello2");
+    cout << builder.str() << endl;
+    cout << e.str() << endl;
     auto ee = HtmlElement::create("ul")
                   ->add_child_2("li", "hello")
                   ->add_child_2("li", "world");
-    cout << builder.str() << endl;
-    cout << e.str() << endl;
+
+    std::cout << "Pointa" << std::endl;
     cout << ee->str() << endl;
 }
