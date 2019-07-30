@@ -1,7 +1,7 @@
 #include "Person.hpp"
 #include "PersonBuilder.hpp"
 
-inline PersonBuilder Person::create()
+PersonBuilder Person::create()
 {
-  return PersonBuilder{};
+    return PersonBuilder{};
 }

@@ -1,21 +1,23 @@
 #pragma once
 #include <string>
 #include <sstream>
-using namespace std;
 
 class PersonBuilder;
 
 class Person
 {
-    //address
-    string street_address, post_code, city;
-    //employment
-    string company_name, position;
+    // address
+    std::string street_address, post_code, city;
+
+    // employment
+    std::string company_name, position;
     int annual_income = 0;
+
     Person() {}
 
 public:
     static PersonBuilder create();
+
     Person(Person &&other)
         : street_address{move(other.street_address)},
           post_code{move(other.post_code)},
@@ -49,7 +51,8 @@ public:
                << " position: " << obj.position
                << " annual_income: " << obj.annual_income;
     }
-    friend class PersonAddress;
-    friend class PersonJobBuilder;
+
+    friend class PersonBuilder;
     friend class PersonAddressBuilder;
+    friend class PersonJobBuilder;
 };

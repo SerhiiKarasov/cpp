@@ -4,10 +4,10 @@
 
 PersonAddressBuilder PersonBuilder::lives()
 {
-  return PersonAddressBuilder{ person };
+    return PersonAddressBuilder{person};
 }
 
 PersonJobBuilder PersonBuilder::works()
 {
-  return PersonJobBuilder{ person };
+    return PersonJobBuilder{person};
 }

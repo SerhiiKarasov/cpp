@@ -1,7 +1,5 @@
 #pragma once
 #include "Person.hpp"
-#include <string>
-using namespace std;
 
 class PersonAddressBuilder;
 class PersonJobBuilder;
@@ -12,14 +10,13 @@ class PersonBuilder
 
 protected:
     Person &person;
-    explicit PersonBuilder(Person &person)
-        : person{person}
+    explicit PersonBuilder(Person &person_build)
+        : person{person_build}
     {
     }
 
 public:
-    PersonBuilder()
-        : person{p}
+    PersonBuilder() : person{p}
     {
     }
 
@@ -28,7 +25,8 @@ public:
         return std::move(person);
     }
 
-    //builder facets
+    // builder facets
+
     PersonAddressBuilder lives();
     PersonJobBuilder works();
 };

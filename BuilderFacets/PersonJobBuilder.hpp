@@ -1,32 +1,31 @@
 #pragma once
-#include <string>
 #include "PersonBuilder.hpp"
-using namespace std;
 
 class PersonJobBuilder : public PersonBuilder
 {
     typedef PersonJobBuilder Self;
 
 public:
-    explicit PersonJobBuilder(Person &person)
-        : PersonBuilder(person)
+    explicit PersonJobBuilder(Person &person_job)
+        : PersonBuilder{person_job}
     {
     }
 
-    Self &at(string company_name)
+    Self &at(std::string company_name)
     {
         person.company_name = company_name;
         return *this;
     }
 
-    Self &as_a(string position)
+    Self &as_a(std::string position)
     {
         person.position = position;
         return *this;
     }
-    Self &earning(int earning)
+
+    Self &earning(int annual_income)
     {
-        person.annual_income = earning;
+        person.annual_income = annual_income;
         return *this;
     }
 };
