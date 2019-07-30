@@ -19,6 +19,9 @@ add_library(${PROJECT_NAME}_lib
             PersonBuilder.cpp
             Person.cpp
             PersonBuilder.hpp
+            PersonJobBuilder.hpp
+            PersonAddressBuilder.hpp
+
             Person.hpp)
 
 target_compile_options(project_warnings
@@ -68,7 +71,7 @@ target_compile_options(project_warnings
 
 target_compile_features(${PROJECT_NAME}_lib
                         PUBLIC
-                        cxx_std_17 # todo: list compile features instead of C++
+                        cxx_std_11 # todo: list compile features instead of C++
                                    # standard
                         )
 set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage -ggdb")

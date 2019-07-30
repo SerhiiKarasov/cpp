@@ -3,6 +3,9 @@
 #include <string>
 using namespace std;
 
+class PersonAddressBuilder;
+class PersonJobBuilder;
+
 class PersonBuilder
 {
     Person p;
@@ -15,5 +18,17 @@ protected:
     }
 
 public:
-    PersonBuilder() : person { p } {}
+    PersonBuilder()
+        : person{p}
+    {
+    }
+
+    operator Person()
+    {
+        return std::move(person);
+    }
+
+    //builder facets
+    PersonAddressBuilder lives();
+    PersonJobBuilder works();
 };

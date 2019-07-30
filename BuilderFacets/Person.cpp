@@ -3,5 +3,5 @@
 
 inline PersonBuilder Person::create()
 {
-
+  return PersonBuilder{};
 }
