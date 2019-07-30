@@ -23,6 +23,5 @@ int main()
                    .earning(10e6);
 
     cout << p << endl;
-    getchar();
     return 0;
 }
