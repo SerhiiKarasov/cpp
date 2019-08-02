@@ -9,8 +9,8 @@
 #include <memory>
 #include <sstream>
 using namespace std;
+#include "Singletone.hpp"
 
-
-int main()
+int main(int ac, char* av[])
 {
 }
