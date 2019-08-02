@@ -3,7 +3,7 @@ project(Singletone LANGUAGES CXX)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 14)
-
+enable_testing()
 # common flags(even for tests)
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS
@@ -11,10 +11,13 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "-Wall -Wextra -fprofile-arcs -ftest-coverage -ggdb")
 endif()
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage -ggdb")
 
 set(CMAKE_BUILD_TYPE Debug)
 # Link this 'library' to use the standard warnings
 add_library(project_warnings INTERFACE)
+
+add_subdirectory(googletest)
 
 target_compile_options(project_warnings
                        INTERFACE -Wall
@@ -61,7 +64,7 @@ target_compile_options(project_warnings
                                                 # the same type
                        )
 
-set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage -ggdb")
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME} Singletone.cpp)
-target_link_libraries(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} PRIVATE gtest gtest_main )

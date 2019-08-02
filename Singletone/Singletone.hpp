@@ -11,7 +11,13 @@ std::string::size_type sz; // alias of size_t
 // delete copy constr, copy assign
 // static function that return static instance
 
-class SingletoneDatabase
+class Database
+{
+public:
+    virtual int get_population(const std::string &name) = 0;
+};
+
+class SingletoneDatabase : public Database
 {
     SingletoneDatabase()
     {
@@ -30,6 +36,10 @@ class SingletoneDatabase
     // static SingletoneDatabase *instance;
 
 public:
+    int get_population(const std::string &name) override
+    {
+        return capitals[name];
+    }
     static SingletoneDatabase &get()
     {
         static SingletoneDatabase instance;
@@ -47,4 +57,51 @@ public:
     //     return instance;
     //     //how to delete? there is no delete for static objects
     // }
+};
+
+class DummyDatabase : public Database
+{
+    map<string, int> capitals;
+
+public:
+    DummyDatabase()
+    {
+        capitals["alpha"] = 1;
+        capitals["beta"] = 2;
+    }
+    int get_population(const std::string &name) override
+    {
+        return capitals[name];
+    }
+};
+
+struct SingletoneRecordFinder
+{
+    int total_population(vector<string> names)
+    {
+        int result = 0;
+        for (auto &name : names)
+        {
+            result += SingletoneDatabase::get().get_population(name);
+        }
+        return result;
+    }
+};
+struct ConfigurableRecordFinder
+{
+    explicit ConfigurableRecordFinder(Database &db)
+        : db{db}
+    {
+    }
+    Database &db;
+    
+    int total_population(vector<string> names)
+    {
+        int result = 0;
+        for (auto &name : names)
+        {
+            result += db.get_population(name);
+        }
+        return result;
+    }
 };
