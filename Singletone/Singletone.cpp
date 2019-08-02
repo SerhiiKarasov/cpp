@@ -13,4 +13,5 @@ using namespace std;
 
 int main(int ac, char* av[])
 {
+    SingletoneDatabase::get();
 }

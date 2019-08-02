@@ -6,6 +6,11 @@
 using namespace std;
 std::string::size_type sz; // alias of size_t
 
+//Singletone impl:
+// private constructor
+// delete copy constr, copy assign
+// static function that return static instance
+
 class SingletoneDatabase
 {
     SingletoneDatabase()
@@ -22,19 +27,24 @@ class SingletoneDatabase
     }
 
     map<string, int> capitals;
-    static SingletoneDatabase *instance;
+    // static SingletoneDatabase *instance;
 
 public:
+    static SingletoneDatabase &get()
+    {
+        static SingletoneDatabase instance;
+        return instance;
+    }
     SingletoneDatabase(SingletoneDatabase const &) = delete;
     void operator=(SingletoneDatabase const &) = delete;
-    static SingletoneDatabase *get_instance()
-    {
-        //it is not thread safe
-        if (!instance)
-        {
-            instance = new SingletoneDatabase;
-        }
-        return instance;
-        //how to delete? there is no delete for static objects
-    }
+    // static SingletoneDatabase *get_instance()
+    // {
+    //     //it is not thread safe
+    //     if (!instance)
+    //     {
+    //         instance = new SingletoneDatabase;
+    //     }
+    //     return instance;
+    //     //how to delete? there is no delete for static objects
+    // }
 };
