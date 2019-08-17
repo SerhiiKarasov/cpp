@@ -14,8 +14,18 @@ Computer vision with QT5 and OpenCV 3
 8) cd sources/build
 9) sudo make
 10) sudo make install
-11) create opencv.pri
+
+
+# How to link openCV in QT
+
+1) Bad way: create opencv.pri
 INCLUDEPATH += /usr/local/include 
  LIBS += -L/usr/local/lib \ 
     -lopencv_world 
-12) include pri file in qt project
+and include pri file in qt project    
+    
+2) Good way: add this in your pro file
+   unix: !macx { 
+      CONFIG += link_pkgconfig 
+      PKGCONFIG += opencv 
+   } 
