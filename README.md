@@ -6,7 +6,7 @@ A template repo for build of c++ project in docker image
 #build docker</b>
 docker build -t example_cpp_build .
 #run docker<b/>
-docker run example_cpp_build
+docker run -v $PWD:/opt/build example_cpp_build
 
 
 
