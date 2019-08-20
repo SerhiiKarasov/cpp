@@ -10,11 +10,10 @@ RUN apt-get update && \
 	libboost-system-dev \
 	libboost-dev 
 
-COPY * /opt/build
+COPY * /opt/build/
 
 WORKDIR /opt/build
 
 RUN make all
 
 CMD make test
-

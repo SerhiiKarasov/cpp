@@ -25,4 +25,4 @@ clean:
 
 .PHONY: test
 test:
-	$(OUTPUT)
+	./$(OUTPUT)
