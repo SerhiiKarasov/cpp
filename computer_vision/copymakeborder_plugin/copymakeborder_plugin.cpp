@@ -24,28 +24,47 @@ QString CopyMakeBorder_Plugin::version()
 
 QString CopyMakeBorder_Plugin::description()
 {
-    return "A <b>Template</b> plugin";
+    return "";
 }
 
 QString CopyMakeBorder_Plugin::help()
 {
-    return "This is a <b>Template</b> plugin. Clone and use it to create new plugins.";
+    return "";
 }
 
 void CopyMakeBorder_Plugin::setupUi(QWidget *parent)
 {
     ui = new Ui::PluginGui;
     ui->setupUi(parent);
-
-    // Connect signals for GUI elemnts manually here since they won't be connected by name in a plugin
-    // ...
-    // emit updateNeeded(); should be added whenever parameters on the plugin GUI change
+    QStringList items;
+    items.append("BORDER_CONSTANT");
+    items.append("BORDER_REPLICATE");
+    items.append("BORDER_REFLECT");
+    items.append("BORDER_WRAP");
+    items.append("BORDER_REFLECT_101");
+    ui->borderTypeComboBox->addItems(items);
+    connect(ui->borderTypeComboBox,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(on_borderTypeComboBox_currentIndexChanged(int)));
 }
 
 void CopyMakeBorder_Plugin::processImage(const cv::Mat &inputImage, cv::Mat &outputImage)
 {
-    // Replace the following line with the actual image processing task
-    inputImage.copyTo(outputImage);
+    int top, bot, left, right;
+    top = bot = inputImage.rows/2;
+    left = right = inputImage.cols/2;
+    cv::copyMakeBorder(inputImage,
+                   outputImage,
+                   top,
+                   bot,
+                   left,
+                   right,
+                   ui->borderTypeComboBox->currentIndex());
+}
 
-    // Otherwise, if the process doesn't affect the output image, update plugin GUI here ...
+void CopyMakeBorder_Plugin::on_borderTypeComboBox_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    emit updateNeeded();
 }

@@ -1,8 +1,8 @@
 
 QT       += widgets
 
-TARGET = Copymakeborder_Plugin
-copymakeborder = lib
+TARGET = CopyMakeBorder_Plugin
+TEMPLATE = lib
 
 CONFIG += plugin
 
@@ -23,7 +23,6 @@ INCLUDEPATH += ../cvplugininterface
 
 SOURCES += \
         copymakeborder_plugin.cpp
-
 HEADERS += \
         copymakeborder_plugin.h \
         copymakeborder_plugin_global.h

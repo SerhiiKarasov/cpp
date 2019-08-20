@@ -29,6 +29,9 @@ signals:
     void errorMessage(QString msg);
     void infoMessage(QString msg);
 
+private slots:
+    void on_borderTypeComboBox_currentIndexChanged(int index);
+
 private:
     Ui::PluginGui *ui;
 
