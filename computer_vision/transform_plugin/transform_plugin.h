@@ -48,6 +48,8 @@ private slots:
 
     void on_interpolationCombo_currentIndexChanged(int index);
 
+    void on_undistort_toggled(bool checked);
+
 private:
     Ui::PluginGui *ui;
 

@@ -1,5 +1,5 @@
 #include "transform_plugin.h"
-
+#include <QDebug>
 #include "ui_plugin.h"
 
 Transform_Plugin::Transform_Plugin()
@@ -53,6 +53,7 @@ void Transform_Plugin::setupUi(QWidget *parent)
                 << "INTER_LANCZOS4");
 
     connect(ui->resizeHalfRadio, SIGNAL(toggled(bool)), this, SLOT(on_resizeHalfRadio_toggled(bool)));
+    connect(ui->undistort, SIGNAL(toggled(bool)), this, SLOT(on_undistort_toggled(bool)));
     connect(ui->resizeDoubleRadio, SIGNAL(toggled(bool)), this, SLOT(on_resizeDoubleRadio_toggled(bool)));
     connect(ui->remapRadio, SIGNAL(toggled(bool)), this, SLOT(on_remapRadio_toggled(bool)));
     connect(ui->affineRadio, SIGNAL(toggled(bool)), this, SLOT(on_affineRadio_toggled(bool)));
@@ -158,6 +159,17 @@ void Transform_Plugin::processImage(const cv::Mat &inputImage, cv::Mat &outputIm
               BORDER_CONSTANT);
 
     }
+    else if(ui->undistort->isChecked())
+    {
+        qDebug() << "undistort_some_bad_data";
+        Mat intrinsic = Mat(3, 3, CV_32FC1);
+        Mat distCoeffs,cameraMatrix;
+
+        undistort(inputImage,
+               outputImage,
+               cameraMatrix,
+               distCoeffs);
+    }
 }
 
 void Transform_Plugin::on_resizeHalfRadio_toggled(bool checked)
@@ -199,5 +211,11 @@ void Transform_Plugin::on_borderTypeCombo_currentIndexChanged(int index)
 void Transform_Plugin::on_interpolationCombo_currentIndexChanged(int index)
 {
     Q_UNUSED(index);
+    emit updateNeeded();
+}
+
+void Transform_Plugin::on_undistort_toggled(bool checked)
+{
+    Q_UNUSED(checked);
     emit updateNeeded();
 }
