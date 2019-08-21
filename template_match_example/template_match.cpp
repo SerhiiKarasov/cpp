@@ -58,7 +58,8 @@ void MatchingMethod( int, void* )
   matchTemplate( img, templ, result, match_method );
   normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
 
-  /// Localizing the best match with minMaxLoc
+  /// Localizing the best match with minMaxLoc (minMaxLoc function is used o locate the global minimum (darkest point in the image) and global maximum (brightest point in the image) values in the resulting image. )
+  /// will show only one place(if we need all matches -> do in loop, and remove each match )
   double minVal; double maxVal; Point minLoc; Point maxLoc;
   Point matchLoc;
 
