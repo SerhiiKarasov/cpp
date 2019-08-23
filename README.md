@@ -1,12 +1,15 @@
-# docker_build_env_for_cpp
-A template repo for build of c++ project in docker image
+#Template repo for build of c++ project in docker image  
+##Preconfiguration for docker:
+https://docs.docker.com/install/linux/linux-postinstall/    
 
-
-#instruction
-#build docker</b>
-docker build -t example_cpp_build .
-#run docker<b/>
-docker run -v $PWD:/opt/build example_cpp_build
-
+#Instruction  
+##build docker image:  
+```
+docker build --network=host -t example_build .  
+```
+##run docker container:  
+```
+docker run --user $(id -u):$(id -g) -v $PWD:/opt/build example_build  
+```
 
 
