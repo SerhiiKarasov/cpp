@@ -113,6 +113,7 @@ in closeEvent()
    return a.exec(); 
  ```
  ## MOC(meta-object compiler)
+ * converts QT things(signals, slots, macros) to c++ code
  * requires Q_OBJECT(mainwindow.hpp, private) for generation of QOBject-inherited class.
  
  ## UIC(user interface compliler)
@@ -132,9 +133,32 @@ in closeEvent()
 * Observer (or Publish/Subscribe) - used to make objects that can listen or observe changes in other objects and respond to them(QEvent, signal and slot)
 * Serializer - class that can be used to read or write other objects(QTextStream, QDataStream)
 * Singleton - only one instance(QApplication)
-* 
 
+## Qt Resource System
+* .qrc - resource collection file, xml that include info about resource files to be included in application
+* file -> new file or project -> qt -> qt resource file -> choose -> name it resources ->  click on resources.qrc -> Add prefix -> images -> add files -> add any jpg -> now use path to this file ":/images/test.jpg"
 
+ ## Styling applications
+ * Qt Style Sheets are almost identical in syntax to HTML CSS (Cascading Style Sheets)
+ * click in designer on widget -> styleSheet property -> set it :
+ ```
+     border: 2px solid #222222; 
+    border-radius: 10px; 
+    background-color: #9999ff; 
+    min-width: 80px; 
+    min-height: 35px; 
+ ```
+  ## Multi-language support
+  * all literals need to embrace in a tr()
+  * need to add TRANSLATIONS in pro
+  ```
+        TRANSLATIONS = translation_lt.ts translation_la.ts 
+  ```
+  * run QtLinguist tool from IDE or lupdate from terminal -> translate files -> run lrelease tool  -> add QM files to resources
+  
+  
+  
+  
  
 
 
