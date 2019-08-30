@@ -95,3 +95,47 @@ in closeEvent()
     #include "opencv2/opencv.hpp"  
 ```
 
+# Chapter 3. Creating a Comprehensive Qt+OpenCV Project
+* qmake a tool to automate Makefiles creation(is make-makefile tool, or makemake for short)
+## Pro File
+* QT  - modules to include(link)
+* Target - name of application
+* Template - whether the output of the build process will be an application, a library, or a plugin
+* SOURCES - source files
+* HEADERS - header files
+* FORMS - ui files
+
+## Main.cpp
+* include of QApplication - main class for control application's workflow
+* Event loop 
+```
+   QApplication a(argc, argv);     
+   return a.exec(); 
+ ```
+ ## MOC(meta-object compiler)
+ * requires Q_OBJECT(mainwindow.hpp, private) for generation of QOBject-inherited class.
+ 
+ ## UIC(user interface compliler)
+ * converts .ui files to c++ code(e.g.     #include "ui_mainwindow.h" )
+ 
+ 
+## Design patters
+* Abstract Factory - for factory classes that are creating objects and controling creation of new objects
+* Command - represent actions as objects
+* Composite - create objects that consist of child objects(Qobject and QWidget)
+* Facade - encapsulate low-level capabilities of an OS by providing simpler interface(QFile)
+* Flyweight(Bridge, Private-Implementation) - don't copy data shared between objects(QString)
+* Memento - save and load objects
+* MetaObject(Reflection) = metaboject describes the details of the object(QMetaObject)
+* Monostate -  attempts to hide the fact that a class is only operating on a single instance of data by using static data members((QSettings)
+* MVC (Model-view-controller) - separate data storage mechanism(Model) from UI(view) and data manipulation(controller) (QTreeView and QFileSystemModel)
+* Observer (or Publish/Subscribe) - used to make objects that can listen or observe changes in other objects and respond to them(QEvent, signal and slot)
+* Serializer - class that can be used to read or write other objects(QTextStream, QDataStream)
+* Singleton - only one instance(QApplication)
+* 
+
+
+ 
+
+
+
