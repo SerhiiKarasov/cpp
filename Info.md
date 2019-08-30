@@ -1,4 +1,4 @@
-#  Introduction to OpenCV and Qt
+#  Chapter 1. Introduction to OpenCV and Qt
 ##  Introduction to OpenCV
 
 ### Main modules
@@ -55,6 +55,26 @@
 
 ### Technology Preview Modules (not guaranteed to work)
 
-
 ## For installing QT download and run [qt-opensource-linux-x64-X.X.X.run](https://download.qt.io/official_releases/)
+
+# Chapter 2. Creating Our First Qt and OpenCV Project
+1. New Project
+2. Application
+3. Qt widgets application
+4. dynamically link opencv in pro file
+```
+      CONFIG += link_pkgconfig 
+      PKGCONFIG += opencv 
+```   
+5. Use layouts(horizontal or vertical) to set elements properly
+6. You may use MVC pattern to communicate data to views using ListView, TreeView, TableView, ColumnView
+7. Add QWidget, QPushButton etc in Design tab
+8. Go to Designer, right click on QPushButton -> Go to slot -> pressed() (private slot was created in mainwindow header and source)
+9. Go to mainwindow.cpp and implement inputPushButton_pressed(), to access the widgets or other elements on the user interface, just use the ui
+10. Go to mainwindow source and header and add :
+```
+    protected: 
+      void closeEvent(QCloseEvent *event); 
+```
+
 
