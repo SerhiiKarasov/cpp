@@ -1,18 +1,19 @@
-#  Introduction to OpenCV
+#  Introduction to OpenCV and Qt
+##  Introduction to OpenCV
 
-## Main modules
+### Main modules
 * core (e.g. Mat)
 * imgproc
 * features2d
 * video
 * others
 
-## Extra modules
+### Extra modules
 * text
 * OCR(Optical Character Recognition)
 * others
 
-# For installing OpenCV download 
+## For installing OpenCV download 
 1. download cmake-gui from https://cmake.org/download/
 2. copy archive "sources" from http://opencv.org/releases.html and unpack
 3. sudp apt-get install libgtk2.0-dev and pkg-config
@@ -26,10 +27,10 @@
 
 
 
-# Introduction to Qt
+## Introduction to Qt
 [qt documentation on modules](http://doc.qt.io/qt-5/qtmodules.html)
 
-## Qt Essentials modules(supported on all platforms)
+### Qt Essentials modules(supported on all platforms)
 * Qt Core
 * Qt Gui(including OpenGl)
 * Qt Multimedia(audio, video, radio, camera)
@@ -43,17 +44,17 @@
 * Qt Widgets
 * Qt Test
 
-## Qt Add-Ons modules(may be unsupported on some platforms) 
+### Qt Add-Ons modules(may be unsupported on some platforms) 
 * Qt 3D
 * Qt Print Support
 * Qt WebEngine
 * Qt Bluetooth
 * others
 
-## Value-Add Modules(offered under commercial license) 
+### Value-Add Modules(offered under commercial license) 
 
-## Technology Preview Modules (not guaranteed to work)
+### Technology Preview Modules (not guaranteed to work)
 
 
-# For installing QT download and run [qt-opensource-linux-x64-X.X.X.run](https://download.qt.io/official_releases/)
+## For installing QT download and run [qt-opensource-linux-x64-X.X.X.run](https://download.qt.io/official_releases/)
 
