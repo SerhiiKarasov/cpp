@@ -65,7 +65,11 @@
 ```
       CONFIG += link_pkgconfig 
       PKGCONFIG += opencv 
-```   
+``` 
+and include module in pro file: 
+```
+    QT += widgets 
+```
 5. Use layouts(horizontal or vertical) to set elements properly
 6. You may use MVC pattern to communicate data to views using ListView, TreeView, TableView, ColumnView
 7. Add QWidget, QPushButton etc in Design tab
@@ -76,5 +80,18 @@
     protected: 
       void closeEvent(QCloseEvent *event); 
 ```
+11. Implement 
+```
+    void loadSettings(); 
+```
+in mainwindow constructor
+```
+   void saveSettings(); 
+```
+in closeEvent()
 
+12. include opencv:
+```
+    #include "opencv2/opencv.hpp"  
+```
 
