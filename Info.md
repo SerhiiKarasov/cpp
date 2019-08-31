@@ -255,3 +255,23 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
 * ones - create a matrix with all elements eq 1
 * t - transpose matrix(for image that is rotation)
 * zeroes - create a matrix with all elements eq 0
+
+# The Mat_<_Tp> class
+* a subclass of the Mat class (and a template class) with identical members, but it can be quite helpful when the type of the matrix (or elements in an image) is known at compile time
+```
+    Mat_<Vec3b> imageCopy(image); // image is a Mat class 
+```
+# Matx< _Tp, m, n >
+* is used for small matrices for which type, width, height are known at complile time
+
+# UMat class
+* will use OpenCL implementation if possible(better to use this class then raw Mat)
+* can be converted to Mat and vice verse
+```
+    Mat::getUMat 
+    UMat::getMat 
+```
+# InputArray, OutputArry, InputOutputArray
+* those are proxy types that are introduced for better readability
+* they are interchangeable with (Mat, Mat_<T>,Matx<T, m, n>,std::vector<T>,std::vector<std::vector<T> >,std::vector<Mat>,std::vector<Mat_<T> >,UMat,std::vector<UMat>,double)
+
