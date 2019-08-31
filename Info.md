@@ -256,22 +256,39 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
 * t - transpose matrix(for image that is rotation)
 * zeroes - create a matrix with all elements eq 0
 
-# The Mat_<_Tp> class
+## The Mat_<_Tp> class
 * a subclass of the Mat class (and a template class) with identical members, but it can be quite helpful when the type of the matrix (or elements in an image) is known at compile time
 ```
     Mat_<Vec3b> imageCopy(image); // image is a Mat class 
 ```
-# Matx< _Tp, m, n >
+## Matx< _Tp, m, n >
 * is used for small matrices for which type, width, height are known at complile time
 
-# UMat class
+## UMat class
 * will use OpenCL implementation if possible(better to use this class then raw Mat)
 * can be converted to Mat and vice verse
 ```
     Mat::getUMat 
     UMat::getMat 
 ```
-# InputArray, OutputArry, InputOutputArray
+## InputArray, OutputArry, InputOutputArray
 * those are proxy types that are introduced for better readability
 * they are interchangeable with (Mat, Mat_<T>,Matx<T, m, n>,std::vector<T>,std::vector<std::vector<T> >,std::vector<Mat>,std::vector<Mat_<T> >,UMat,std::vector<UMat>,double)
 
+# Reading images using OpenCV
+* example
+```
+   Mat image = imread("/tmp/test.jpg", IMREAD_GRAYSCALE | IMREAD_IGNORE_ORIENTATION); 
+```
+* supports (    Windows bitmaps: \*.bmp, \*.dib
+    JPEG files: \*.jpeg, \*.jpg, \*.jpe
+    JPEG 2000 files: \*.jp2
+    Portable Network Graphics: \*.png
+    WebP: \*.webp
+    Portable image format: \*.pbm, \*.pgm, \*.ppm, \*.pxm, \*.pnm
+    Sun rasters: \*.sr, \*.ras
+    TIFF files: \*.tiff, \*.tif
+    OpenEXR Image files: \*.exr
+    Radiance HDR: \*.hdr, \*.pic
+    Raster and Vector geospatial data supported by Gdal)
+    
