@@ -441,3 +441,58 @@ or even more correct with ByterPerLine option
 ```
 
 ## The QPainter class
+*  class can be used to draw (and basically paint) on any Qt class that is a subclass of the QPaintDevice class(e.g. QWidget)
+### QPainter methods
+* draw 
+* fillRect
+* drawArc
+* drawEllipse
+* drawImage
+
+### example using QPainter class
+* Qt Widgets Application
+* new c++ class QBlinkingWidget (base class QWidget)
+* add protected method for new class
+```
+   protected:
+      void paintEvent(QPaintEvent *event);
+```
+and slot
+```
+   private slots: 
+      void onBlink(); 
+```
+and
+```
+   private: 
+      QTimer blinkTimer; 
+      bool blink; 
+```
+* in widget source file add in constructor
+```
+      connect(&blinkTimer, SIGNAL(timeout), this, SLOT(onBlink()));
+      blinkTimer.start(500);
+```
+* paintEvent implement
+```          
+      QPainter painter(this); 
+      painter.fillRect(this->rect(), 
+      QBrush(Qt::red)); 
+```
+* onBlink implement
+```
+          blink = !blink; 
+          this->update();
+```
+* in Design tab add QWidget and right click -> promote to QBlinkingWidget
+
+
+## Camera and video handling in Qt
+* requires       QT += multimedia 
+* QCamera: This provides access to cameras available on a platform.
+* QCameraInfo: This can be used to get information about the available cameras on a platform.
+* QMediaPlayer: This can be used to play video files and other types of recorded media.
+* QMediaRecorder: This class is useful when recording videos or other media types.
+* QVideoFrame: This class can be used to access individual frames grabbed by the camera.
+* QVideoProbe: This can be used to monitor frames from a camera or video source. This class can also be used to process frames further in Qt.
+* QVideoWidget: This can be used to display incoming frames from a camera or video source.
