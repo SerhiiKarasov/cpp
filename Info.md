@@ -545,4 +545,41 @@ and
         QGraphicsProxyWidget* proxy = scene.addWidget(button); 
         proxy->setGeometry(QRectF(-200.0, -200, 400, 100.0)); 
 ```
+* setBackgroundBrush, backgroundBrush, setForegroundBrush, and foregroundBrush - allows QBrush to brush background and foreground on the scene
+* font and setFont - get and set QFont for the scene
+* minimunRenderSize and setMinimumRenderSize - choose the minimum size of object that will be drawn on the sceen
+* sceneRect and setSceneRect - specify bounding rectangular on the scene, sceneRect returns the biggest rectangular that can cover all items on the scene
+* stickyFocus and setStickyFocus functions can be used to enable or disable the Sticky Focus mode for the scene. If Sticky Focus is enabled, clicking on an empty space in the scene will not have any effect on the focused item
+* collidingItems is a function that finds out if an item shares some part of its area (or in other words collides) with any other items. 
+* createItemGroup and destroyItemGroup functions can be used to create and remove QGraphicsItemGroup class instances. 
+* QGraphicsItemGroup is basically another QGraphicsItem that is used to group items.
+* hasFocus, setFocus, focusItem, and setFocusItem functions are all used to deal with the currently focused item in the graphics scene.
+* width and height
+* invalidate - can be used to request a redraw of the scene wholly or partially
+* itemAt - to find a pointer to theQGraphicItem at a certain position in the scene
+* item - returns the list of items added to the scene. Basically, QList of QGraphicsItem
+* itemsBoundingRect - can be used to get a QRectF class, or simply the smallest rectangle that can contain all of the items on the scene
+* mouseGrabberItem - can be used to get the item that is currently clicked on without the mouse button being released.
+* removeItem - function can be used to remove an item from the scene
+* render - can be used to Render the scene on QPaintDevice
+* selectedItems, selectionArea, and setSelectionArea functions - handling one or multiple item selections. 
+* sendEvent - function can be used to send QEvent classes to items on the scene
+* style and setStyle - functions are used to set and get the styling of the scene.
+* update -  function can be used to redraw part or all of the scene
+* views - function can be used to get a QList class containing QGraphicsView
+* dragEnterEvent, dragLeaveEvent, dragMoveEvent, and dropEvent functions can be overridden to add drag and drop functionality to the scene.
+* drawBackground and drawForeground functions should be overridden if we need to add a custom background or foreground to the whole scene
+* mouseDoubleClickEvent, mouseMoveEvent, mousePressEvent, mouseReleaseEvent, and wheelEvent functions can be used to take care of different mouse events in the scene
+* event can be overridden to process all events received by the scene
 
+## The Items, QGraphicsItem
+* QGraphicsEllipseItem
+* QGraphicsLineItem
+* QGraphicsPathItem
+* QGraphicsPixmapItem
+* QGraphicsPolygonItem
+* QGraphicsRectItem
+* QGraphicsSimpleTextItem
+* QGraphicsTextItem
+* acceptDrops and setAcceptDrops functions can be used to make an item accept drag and drop events
+* acceptHoverEvents, setAcceptHoverEvents, acceptTouchEvents, setAcceptTouchEvents, acceptedMouseButtons, and setAcceptedMouseButtons functions all deal with the item interaction and its response to mouse clicks 
