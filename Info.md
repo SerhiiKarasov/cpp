@@ -192,11 +192,27 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
     Mat matrix(10, 10, CV_8UC(1)); 
     or 
     Mat matrix(10, 10, CV_8UC(1), Scalar(0); 
-``
-* Mixed value for type, bit count, number of channesl CV_<bits><type>C(<channels>) :
+```
+* CV_<bits><type>C(<channels>) -  Mixed value for type, bit count, number of channesl 
 <bits>  - 8, 16, 32, 64
 <type>  - U (unsigned), S(signed), F(signed float)
-* <channels>
-  
-      
+<channels> - it may be 1,2,3,4 etc
+* imread - read Mat from file
+* region of interest (ROI) - part of Mat object
+```
+          Mat roi(image, Rect(25,25,50,50)); //doesn't perform deep copy
+```
+* clone - deep copy of Mat object
+* Scalar - template class for a 4-element vector derived from Vec, can be used to pass pixel value
+* row - copy one row from Mat object
+```
+     Mat r = image.row(0); // first row 
+```
+* column - copy one column from Mat object
+* rowRange, columnRange - copy range of columns or rows
+```
+   Mat centralRows = image.rowRange(image.rows/2 - 10, image.rows/2 + 10); 
+```
+* locateRoi - method to find your roi on the image(Mat object)
+ 
  
