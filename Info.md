@@ -496,3 +496,11 @@ and
 * QVideoFrame: This class can be used to access individual frames grabbed by the camera.
 * QVideoProbe: This can be used to monitor frames from a camera or video source. This class can also be used to process frames further in Qt.
 * QVideoWidget: This can be used to display incoming frames from a camera or video source.
+
+
+
+# Chapter 5. The Graphics View Framework
+* Based on
+    The Scene (QGraphicsScene class)
+    The View (QGraphicsView widget)
+    Graphical Items (QGraphicsItem and its subclasses)
