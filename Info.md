@@ -184,6 +184,19 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
 }
 
 ```
-
-
-
+# Chapter 4. Mat and QImage
+## All about the Mat class
+* Mat class(Matrix) is an n-dimensional array capable of storing and handling different mathematical data types in single or multiple channels. Grayscale image is matrix where each cell represents pixel(0 for balack, 255 for white)
+* Example, 10x10 matrix, with each element a single channel 8-bit unsigned integer (or byte):: 
+```
+    Mat matrix(10, 10, CV_8UC(1)); 
+    or 
+    Mat matrix(10, 10, CV_8UC(1), Scalar(0); 
+``
+* Mixed value for type, bit count, number of channesl CV_<bits><type>C(<channels>) :
+<bits>  - 8, 16, 32, 64
+<type>  - U (unsigned), S(signed), F(signed float)
+* <channels>
+  
+      
+ 
