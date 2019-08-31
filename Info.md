@@ -156,10 +156,34 @@ in closeEvent()
   ```
   * run QtLinguist tool from IDE or lupdate from terminal -> translate files -> run lrelease tool  -> add QM files to resources
   
-  
-  
-  
- 
+## Creating and using plugins
+* create cvplugininterface.hpp with   
+```
+   #define CVPLUGININTERFACE_IID "com.sk.cvplugininterface" 
+   Q_DECLARE_INTERFACE(CvPluginInterface, CVPLUGININTERFACE_IID) 
+```
+* run new project -> library -> c++ library(Shared Library), copy interface hpp to project 
+* in pro file
+```
+    CONFIG += plugin 
+```
+* create class that inherits from QObject and CvPluginInterface. And add to this class in header:
+```
+      Q_OBJECT 
+      Q_PLUGIN_METADATA(IID "com.sk.cvplugininterface") 
+      Q_INTERFACES(CvPluginInterface) 
+```
+* create application and use plugin using :
+```
+QLibrary::isLibrary(filter.absoluteFilePath());
+QPluginLoader pluginLoader(filter.absoluteFilePath(), this); 
+if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance())) 
+{
+      //code
+      pluginLoader.unload()
+}
+
+```
 
 
 
