@@ -527,3 +527,22 @@ and
 ```
     qDebug() << scene.items().count(); 
 ```
+## The Scene, QGraphicsScene
+### Methods
+* addEllipse -> return QGraphicsEllipseItem
+* addLine -> returns QGraphicsLineItem
+* addRect -> returns QGraphicsRectItem
+* addPolygon -> returns QGraphicsPolygonItem
+* addPath -> can be used to add QPainterPath to the scene with the given QPen or QBrush, returns QGraphicsPathItem
+* addSimpleText, addText - adding text and formatted text into the scene. Returning QGraphicsSimpleTextItem, QGraphicsTextItem.
+* addPixmap - returns QGraphicsPixmapItem
+* addItem - returns QGraphicsItem
+* addWidget - 
+```
+        QPushButton *button = new QPushButton(Q_NULLPTR); 
+        connect(button, SIGNAL(pressed()), this, SLOT(onAction())); 
+        button->setText(tr("Do it!")); 
+        QGraphicsProxyWidget* proxy = scene.addWidget(button); 
+        proxy->setGeometry(QRectF(-200.0, -200, 400, 100.0)); 
+```
+
