@@ -583,3 +583,58 @@ and
 * QGraphicsTextItem
 * acceptDrops and setAcceptDrops functions can be used to make an item accept drag and drop events
 * acceptHoverEvents, setAcceptHoverEvents, acceptTouchEvents, setAcceptTouchEvents, acceptedMouseButtons, and setAcceptedMouseButtons functions all deal with the item interaction and its response to mouse clicks 
+* example 
+```
+QGraphicsRectItem *item = 
+           new QGraphicsRectItem(0, 
+                                 0, 
+                                 100, 
+                                 100, 
+                                 this); 
+        item->setAcceptDrops(true); 
+```
+* boundingRegion - function can be used to get a QRegion class describing the region of the graphical item. 
+* childItems - function can be used to get a QList filled with the QGraphicsItem classes that are children of this item.
+* childrenBoundingRect, boundingRect, and sceneBoundingRect functions can be used to retrieve a QRectF class containing the bounding rect of the children of this item, the item itself, and the scene.
+* clearFocus, setFocus and hasFocus functions can be used to remove, set, and get the focus status of this item.
+* collidesWithItem, collidesWithPath, and collidingItems functions can be used to check if this item is in a collision  with other item
+* contains function takes a point location (QPointF class to be precise) and checks if this item contains that point.
+* cursor, setCursor, unsetCursor, and hasCursor functions are useful for setting, getting, and unsetting a specific mouse cursor type for this item.
+* hide, show, setVisible, isVisible, opacity, setOpacity, and effectiveOpacity functions are all related to the visibility (and opacity) of the item. 
+* flags, setFlags, and setFlag functions can be used to get or set the flags for this item(ItemIsFocusable , ItemIsMovable)
+* setGraphicsEffect and graphicsEffect - can set or get effects on items(QGraphicsBlurEffect, QGraphicsColorizeEffect, GraphicsDropShadowEffect,QGraphicsOpacityEffect)
+* group and setGroup - functions to add an item to a group or get the group class containing the item  to any groups.
+* isAncestorOf function can be used to check if this item is a parent
+* setParentItem and parentItem and be set and retrieve the parent item of the current item
+* isSelected and setSelected functions can be used to change the selected mode of an item
+* mapFromItem, mapToItem, mapFromParent, mapToParent, mapFromScene, mapToScene, mapRectFromItem, mapRectToScene, mapRectFromParent, mapRectToParent, mapRectFromScene, and mapRectToScene - functions to convert the coordinates from or to the scene, another item, or the parent. 
+* moveBy, pos, setPos, x, setX, y, setY, rotation, setRotation, scale, and setScale functions can be used to get or set different geometric properties of the item
+* transform, setTransform, setTransformOriginPoint, and resetTransform functions can be used to apply or retrieve any geometric transformation to the item. 
+* scenePos function can be used to get the position of the item in the scene. It's the same as calling mapToScene(0,0)
+* data and setData functions can be used to set and retrieve any custom data in and from an item
+* zValue and setZValue functions can be used to modify and retrieve the Z value of an item. Z value decides which items should be drawn in front of the items and so on. 
+* contextMenuEvent
+* dragEnterEvent, dragLeaveEvent, dragMoveEvent, dropEvent
+* focusInEvent, focusOutEvent
+* hoverEnterEvent, hoverLeaveEvent, hoverMoveEvent
+* keyPressEvent, keyReleaseEvent
+* mouseDoubleClickEvent, mouseMoveEvent, mousePressEvent, mouseReleaseEvent, wheelEvent
+
+## The View, QGraphicsView
+* QGraphicsView class is a Qt Widget class that can be placed on a window to display QGraphicsScene
+* alignment and setAlignment functions can be used to set the alignment of the scene in the view.
+* dragMode and setDragMode functions can be used to get and set the drag mode of the view. 
+* isInteractive and setInteractive functions allow retrieving and modifying the interactive behavior of the view
+* optimizationFlags, setOptimizationFlags, renderHints, setRenderHints, viewportUpdateMode, and setViewportUpdateMode functions are used respectively to get and set parameters related to both performance and render quality of the view
+* rubberBandSelectionMode and setRubberBandSelectionMode functions can be used to set the item selection mode of the view in case dragMode are set to RubberBandDrag mode. 
+* sceneRect and setSceneRect functions are useful for getting and setting the visualized area of the scene in the view
+* centerOn function can be used to make sure a specific point or item is in the center of the view
+* ensureVisible function can be used to scroll the view to a specific area (with given margins) to make sure it's in the view
+* fitInView function, quite similar to centerOn and ensureVisible but with the major difference that this function also scales the contents of the view to fit in the view
+* itemAt function can be used to retrieve the item at a specific position in the view.
+* mapFromScene and mapToScene functions can be used to convert a position from and to the scene coordinate system
+* items functions can be used to get a list of items in the scene.
+* render function is useful for performing a render of the whole view or part of it
+* rubberBandRect function can be used to get the rubber band selected rectangle.
+* setScene and scene functions can be used to set and get a scene for the view
+* setMatrix, setTransform, transform, rotate, scale, shear, and translate
