@@ -193,7 +193,7 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
     or 
     Mat matrix(10, 10, CV_8UC(1), Scalar(0); 
 ```
-* CV_<bits><type>C(<channels>) -  Mixed value for type, bit count, number of channesl 
+* 'CV_<bits><type>C(<channels>)' -  Mixed value for type, bit count, number of channesl 
 <bits>  - 8, 16, 32, 64
 <type>  - U (unsigned), S(signed), F(signed float)
 <channels> - it may be 1,2,3,4 etc
@@ -214,5 +214,44 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
    Mat centralRows = image.rowRange(image.rows/2 - 10, image.rows/2 + 10); 
 ```
 * locateRoi - method to find your roi on the image(Mat object)
- 
- 
+```
+    centralRows.locateROI(parentSize, offset); 
+```
+## Mat properties 
+* depth (i.e. type and bit count of Mat) it may be CV_8U, CV_8S, CV_16U, CV_16S, CV_32S, CV_32F, CV_64F
+* channels 
+* type , e.g. U
+* cols - number of columns
+* rows - number of rows
+* elemSize - size of each element in bytes
+* elemSize1 - size of each element in bytes regardless of the channel count
+* empty - is empty?
+* isContinuous
+* isSubmatrix - true if Mat is submatrix of another Mat(roi is submatrix of initial Mat)
+* total - amount of elements (width * height)
+* step, in standard image that is width
+      
+##  Useful methods to run on Mat      
+* at - access method
+* begin, end - retrieve and access elements via iterators
+* forEach
+* adjustRoi - to change siuze of roi matrix
+* clone - deep copy
+* convertTo - change the data type of Mat(may be used to scale images)
+* copyTo -copy all or part of image to another Mat object
+* ptr - pointer to get access to Mat data
+* release - clean up Mat object's memory
+* reserve - reserve memory for number of rows
+* reserveBuffer - reserve memory for number of bytes
+* reshape - change number of channels
+* resize - change number of rows of Mat object
+* setTo - set elements of Mat object to some value
+* cross - compute cross product of two three-dimensional matrices
+* diag - extract a diagonal of matrix
+* dot - compute dot producct of two matrices
+* eye - create an identity matrix
+* inv - inverse matrix
+* mul - compute an element-wise multiplication or division of two matrices
+* ones - create a matrix with all elements eq 1
+* t - transpose matrix(for image that is rotation)
+* zeroes - create a matrix with all elements eq 0
