@@ -369,4 +369,75 @@ or even more correct with ByterPerLine option
 ```
       QImage image("/tmp/test.jpg"); 
 ```
-* Qt supports BMP, GIF, JPG, PNG, PBM, PGM, XBM, XPM, PPM. Some of them only read only.
+* QImage supports BMP, GIF, JPG, PNG, PBM, PGM, XBM, XPM, PPM. Some of them only read only.
+* allGray - method to check if all pixels are shades of gray(all pixels have same rgb values in respective channels)
+* bits , constButs - accessing underlying image data, may be used to convert QImage to Mat
+```
+        QImage image("c:/dev/test.jpg"); 
+        image = image.convertToFormat(QImage::Format_RGB888); 
+        Mat mat = Mat(image.height(),image.width(),CV_8UC(3),image.bits(),image.bytesPerLine()); 
+```
+## QImage methods
+* byteCount - number of bytes occupied by the image data
+* bytesPerLine - (similar to step in Mat)
+* convertToFormat - convert to another format(e.g. from rgb to grb)
+* copy - copy all or part of image to QImage class
+* depth - bits per pixel
+* fill - fill all pixels with same color
+* format - get current format of QImage
+* hasAlphaChannel - does image has transparency channel
+* height, width, size
+* isNull - true if no image data is present
+* load, loadFromData,  fromData - retrieve image from disk or from buffer(similar to imdecode in opencv)
+* mirrored - flips image verticalluy
+* pixel - similar to at in opencv, access pixel
+* pixelColor - returns QColor
+* rect - return QRect
+* rgbSwapped - swaps blue and red(analog ot cvtColor)
+* save - save to file
+* scaled, scaledToHeihgt, scaledToWidth - resize image to a given size. May be used options Qt::IgnoreAspectRatio, Qt::KeepAspectRatio, Qt::KeepAspectRatioByExpanding
+* setPixel, setPixelColor
+* setText - set a text value in the image formats that support it
+* text - retrieve text value set to an image
+* transformed - transforms image, takes QMatrix ot QTransform class and returns the transformed image. 
+```
+       QImage image("/tmp/test.jpg"); 
+       QTransform trans; 
+       trans.rotate(45); 
+       image = image.transformed(trans); 
+```
+* trueMatrix - can be used to retrieve the transformation matrix used for transform
+* valid - takes a point(x,y) and returns true if the point is a valid position on the image
+
+
+## The QPixmap class
+* is used when need to show image on the screen, not so flexible about manipulation on the image data, still maybe used in same way as QImage
+* convertFromImage, fromImage - fill QPixmap with data from a QImage
+
+## QT application example with QPixmap
+* new project -> Qt Widgets Application
+* add events in mainwindow.hpp in protected:
+```
+        void dragEnterEvent(QDragEnterEvent *event); 
+        void dropEvent(QDropEvent *event); 
+```
+* implement void dragEnterEvent() by accessing file that is dragged
+```
+    QFileInfo file(event->mimeData()->urls().at(0).toLocalFile()); 
+    if(acceptedFileTypes.contains(file.suffix().toLower())) 
+    { 
+        event->acceptProposedAction(); 
+    }
+```
+* implement void dropEvent() by accessing file that is dragged
+```
+    QFileInfo file(event->mimeData()->urls().at(0).toLocalFile()); 
+    if(pixmap.load(file.absoluteFilePath())) 
+    { 
+       ui->label->setPixmap(pixmap.scaled(ui->label->size(), 
+       Qt::KeepAspectRatio, 
+       Qt::SmoothTransformation)); 
+    } 
+```
+
+## The QPainter class
