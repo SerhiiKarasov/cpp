@@ -500,7 +500,30 @@ and
 
 
 # Chapter 5. The Graphics View Framework
-* Based on
-    The Scene (QGraphicsScene class)
-    The View (QGraphicsView widget)
-    Graphical Items (QGraphicsItem and its subclasses)
+* The Scene (QGraphicsScene class). The Scene or QGraphicsScene manages the Items or instances of QGraphicsItem (its subclasses), contains them, and propagates events (such as mouse clicks and so on) into the items.
+* The View (QGraphicsView widget). The View or the QGraphicsView widget is used to visualize and display the contents of QGraphicsScene. It's also responsible for propagating events to QGraphicsScene. Different coordinate systems that QGraphicsScene and QGraphicsView have.
+* Graphical Items (QGraphicsItem and its subclasses). The Items, or instances of the QGraphicsItem subclasses, are the items contained within QGraphicsScene. They can be lines, rectangles, images, text, and so on.
+
+## example of graphics view gramework usage
+* Qt Widgets Application
+* add a Graphics View widge
+* add in mainwindow
+```
+    QGraphicsScene scene; 
+```
+* in mainwindow constructor 
+```
+    ui->graphicsView->setScene(&scene); 
+```
+* read somehow pixmap and add it to the scene
+```
+    scene.addPixmap(pixmap); 
+```
+* we can delete the item
+```
+    delete item; 
+```
+* debug message
+```
+    qDebug() << scene.items().count(); 
+```
