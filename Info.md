@@ -291,4 +291,82 @@ if(dynamic_cast<CvPluginInterface*>(pluginLoader.instance()))
     OpenEXR Image files: \*.exr
     Radiance HDR: \*.hdr, \*.pic
     Raster and Vector geospatial data supported by Gdal)
-    
+* ImreadModes enum provides list of flags(e.g. IMREAD_IGNORE_ORIENTATION)
+* mreadmulti - reads multipage image files(e.g tifs)
+* imdecode - read from memory buffer
+
+
+# Writing images using OpenCV
+* example
+```
+    std::vector<int> params; 
+    params.push_back(IMWRITE_JPEG_QUALITY); 
+    params.push_back(20); 
+    params.push_back(IMWRITE_JPEG_PROGRESSIVE); 
+    params.push_back(1); // 1 = true, 0 = false 
+    imwrite("c:/dev/output.jpg", image, params);
+```
+or default parameters
+```
+    std::vector<int> params; 
+    imwrite("c:/dev/output.jpg", image, params); 
+```
+* imencode - writes to memory buffer
+
+# Reading and writing videos in OpenCV
+* class VideoCapture
+```
+    VideoCapture video; 
+    video.open("/tmp/test.avi"); //maybe set of jpegs, url, etc
+    while(video.read(frame)) 
+    {             
+    } 
+    video.release();
+```
+* video properties(Full list in the documentation - VideoCaptureProperties)
+```
+    double frameCount = video.get(CAP_PROP_FRAME_COUNT); 
+    video.set(CAP_PROP_POS_FRAMES, 100);
+```
+* class VideoWriter - writes video in video file
+```
+    VideoWriter video; 
+    video.open("/tmp/output.avi", CAP_ANY, CV_FOURCC('M','P', 'G','4'), 30.0, Size(640, 480), true); 
+    if(video.isOpened()) 
+    { 
+      while(framesRemain()) 
+      { 
+        video.write(getFrame()); 
+      } 
+    } 
+    video.release();
+```
+* [FourCC docs](http://www.fourcc.org/codecs.php)
+
+
+## The HighGUI module in OpenCV
+* imshow - shows image in window
+
+## Image and video handling in Qt
+* QImage
+```
+    QImage image(320, 240, QImage::Format_RGB888); 
+```
+* QImage::Format may be (QImage::Format_MonoLSB, QImage::Format_Mono, QImage::Format_Indexed8, QImage::Format_ARGB32_Premultiplied, QImage::Format_RGB666 etc)
+* how to convert cv::Mat(BGR) to Qt::QImage(RGB)
+```
+    Mat mat = imread("/tmp/test.jpg"); 
+    cvtColor(mat, mat, CV_BGR2RGB); //swaps blue and red channels
+    QImage image(mat.data,mat.cols,mat.rows,QImage::Format_RGB888); 
+```
+or even more correct with ByterPerLine option
+```
+    Mat mat = imread("/tmp/test.jpg"); 
+    cvtColor(mat, mat, CV_BGR2RGB); //swaps blue and red channels
+    QImage image(mat.data,mat.cols,mat.rows,mat.step, QImage::Format_RGB888); 
+```
+* read image from disk
+```
+      QImage image("/tmp/test.jpg"); 
+```
+* Qt supports BMP, GIF, JPG, PNG, PBM, PGM, XBM, XPM, PPM. Some of them only read only.
