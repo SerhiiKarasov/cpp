@@ -727,7 +727,7 @@ INTER_LANCZOS4: This is for the Lanczos interpolation over a neighborhood of 8x8
 
 ### Image thresholding 
 * thresholding  - is image segmentation, which itself is the process of distinguishing between groups of related pixels, either in terms of intensity, color, or any other image properties 
-* threshold and adaptiveThreshold - function can be used to apply a fixed-level threshold to an image
+* threshold - function can be used to apply a fixed-level threshold to an image
 ```
         cvtColor(inputImage, grayScale, CV_BGR2GRAY); 
         threshold(grayScaleIn, 
@@ -737,3 +737,38 @@ INTER_LANCZOS4: This is for the Lanczos interpolation over a neighborhood of 8x8
                  THRESH_BINARY_INV); 
         cvtColor(grayScale, outputImage, CV_GRAY2BGR); 
 ```
+* adaptiveThreshold: This can be used to apply an adaptive threshold to a grayscale image. This function, depending on the adaptive method passed to it (cv::AdaptiveThresholdTypes)
+
+## Drawing in OpenCV
+### common parameters of drawing functions
+* color: This parameter is simply the color of the object being drawn on the image. It can be created using scalar and needs to be in BGR format (for color images) as it is the default color format for most OpenCV functions.
+* thickness: This parameter, which is set to 1 by default, is the thickness of the outlines of the object being drawn on the image. This parameter is specified in terms of pixels.
+* lineType: This can be one of the entries in the cv::LineTypes enum, and it decides the detailing of the outlines of the object being drawn
+* shift - This parameter is used only in case the points and locations provided to drawing functions include fractional bits. 
+
+### drawing functions
+* line
+```
+        cv::line(img, 
+                 Point(0,0), 
+                 Point(img.cols-1,img.rows-1), 
+                 Scalar(0,0,255), 
+                 3, 
+                 LINE_AA); 
+```
+* arrowedLine 
+* rectangle
+* putText
+
+
+## Template matching
+* matchTemplate - searches image in another image
+* cv::TemplateMatchModes  
+    TM_SQDIFF  
+    TM_SQDIFF_NORMED  
+    TM_CCORR  
+    TM_CCORR_NORMED  
+    TM_CCOEFF  
+    TM_CCOEFF_NORMED  
+
+
