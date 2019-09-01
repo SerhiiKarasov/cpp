@@ -638,3 +638,102 @@ QGraphicsRectItem *item =
 * rubberBandRect function can be used to get the rubber band selected rectangle.
 * setScene and scene functions can be used to set and get a scene for the view
 * setMatrix, setTransform, transform, rotate, scale, shear, and translate
+
+# 6.Image Processing in OpenCV
+## Border types
+*    BORDER_CONSTANT   
+*    BORDER_REPLICATE  
+*    BORDER_REFLECT    
+*    BORDER_WRAP       
+*    BORDER_REFLECT_101
+*    BORDER_TRANSPARENT
+*    BORDER_ISOLATED
+
+# Filtering methods:
+* bilateralFilter - depends o sigma value and diameter it is possible to get cartoonish image
+* blur - These are all used for getting a smoothed version of the input image. All of these functions use a kernel size parameter, which is basically the same as a diameter parameter, and it's used to decide the diameter of the neighboring pixels from which the filtered pixel will be calculated. (
+* boxFilter - same as blur
+* sqrBoxFilter- same as blur
+* GaussianBlur- requires Gaussian kernel standart deviation(sigma) in X and Y directions
+* medianBlur- same as blur
+```
+        Size kernelSize(5,5); 
+        blur(inpMat,outMat,kernelSize); 
+        int depth = -1; // output depth same as source 
+        Size kernelSizeB(10,10); 
+        Point anchorPoint(-1,-1); 
+        bool normalized = true; 
+        boxFilter(inutMat,outMat,depth, 
+           kernelSizeB,anchorPoint, normalized); 
+        double sigma = 10; 
+        GaussianBlur(inpMat,outMat,kernelSize,sigma,sigma); 
+        int apertureSize = 10; 
+        medianBlur(inpMat,outMat,apertureSize); 
+```
+* filter2D - apply custom filter on the image
+```
+    // Sharpening image 
+        Matx33f f2dkernel(0, -1, 0, 
+                         -1, 5, -1, 
+                          0, -1, 0); 
+        int depth = -1; // output depth same as source 
+        filter2D(inpMat,outMat,depth,f2dkernel); 
+```
+* Laplacian, Scharr, Sobel, and spatialGradient: These functions deal with image derivatives. Image derivatives are very important in computer vision since they can be used to detect regions with changes, or, better yet, significant changes (since that's one of the use cases of derivatives) in an image.
+```
+        int depth = -1; 
+        int dx = 1; int dy = 1; 
+        int kernelSize = 3; 
+        double scale = 5; double delta = 220; 
+        Sobel(inpMat, outMat, depth,dx,dy,kernelSize,scale,delta); 
+```
+* erode and dilate  - for getting an erosion and dilation effect.
+* morphologyEx - function can be used to perform various morphological operations. Possible arguments: MORPH_ERODE, MORPH_DILATE, MORPH_OPEN(dilate eroded image - remove small artifacts), MORPH_CLOSE(erode dilated image - remove small disconnections), MORPH_GRADIENT(diff between erroded and dilated), MORPH_TOPHAT(diff between image and its opened morph), MORPH_BLACKHAT(diff between closing image and image itself)
+
+## Image transformation capabilities
+* geometric transformation functions need to be provided with a cv::BorderType and cv::InterpolationFlags parameter 
+
+* interpolation methods(cv::InterpolationFlags)
+INTER_NEAREST: This is for the nearest neighbor interpolation  
+INTER_LINEAR: This is for bilinear interpolation  
+INTER_CUBIC: This is for bicubic interpolation  
+INTER_AREA: This is for a pixel area relation resampling  
+INTER_LANCZOS4: This is for the Lanczos interpolation over a neighborhood of 8x8  
+
+### Geometric transformations
+*     resize: This function can be used to resize an image. Here's an example of how it's used:
+```
+        // Resize to 320x240, with default interpolation mode 
+        resize(inMat, outMat, Size(320,240)); 
+```
+* warpAffine - This function can be used to perform an affine transformation. You need to provide this function with a proper transform matrix, which can be obtained using the getAffineTransform function. The getAffineTransform. Can be used to perform a rotation of the source image
+* warpPerspective - This function is useful for performing a perspective transform. transform matrix that can be obtained using the findHomography function. findHomography function can be used to calculate homography changes between two set of points.
+* remap: This function is a very powerful geometric transformation function that can be used to perform a remapping of pixels from the source to the output image. 
+* remap also may be use to correct lens distortion. Need to get mapping using initUndistortRectifyMap and initWideAngleProjMap
+
+### Colors and color spaces
+* cvtColor
+* cv::ColorConversionCodes
+```
+   // Convert BGR to HSV color space 
+   cvtColor(inputImage, outputImage, CV_BGR2HSV); 
+   // Convert Grayscale to RGBA color space 
+   cvtColor(inputImage, outputImage, CV_GRAY2RGBA); 
+```
+* applyColorMap  - to map colors from the input image to other colors in the output image
+```
+ applyColorMap(inputImage, outputImage, COLORMAP_JET); 
+```
+
+### Image thresholding 
+* thresholding  - is image segmentation, which itself is the process of distinguishing between groups of related pixels, either in terms of intensity, color, or any other image properties 
+* threshold and adaptiveThreshold - function can be used to apply a fixed-level threshold to an image
+```
+        cvtColor(inputImage, grayScale, CV_BGR2GRAY); 
+        threshold(grayScaleIn, 
+                 grayScaleOut, 
+                 45, 
+                 255, 
+                 THRESH_BINARY_INV); 
+        cvtColor(grayScale, outputImage, CV_GRAY2BGR); 
+```
