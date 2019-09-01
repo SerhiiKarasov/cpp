@@ -1101,3 +1101,29 @@ emit outDisplay(QPixmap::fromImage(QImage(outFrame.data,outFrame.cols,outFrame.r
     memSem.acquire(X); 
     process_image(); // memory intensive process 
     memSem.release(X); 
+```
+## Wait conditions
+* problem - certain thread must wait for some condition other than the thread being executed by the operating system. In such cases, if quite naturally, a mutex or a read-write lock is used by the thread, it can block all other threads because it is simply the thread's turn to run and it is waiting for some specific condition
+* QWaitCondition
+* example  
+one thread may release mutex if function is not finished imageExistsCond  
+```
+    forever 
+    { 
+      mutex.lock(); 
+      imageExistsCond.wait(&mutex); 
+      read_image(); 
+      mutex.unlock(); 
+    } 
+```
+another thread will wake this thread(may be wakeOne)  
+```
+   forever 
+    { 
+      if(QFile::exists("image.jpg")) 
+          imageExistsCond.wakeAll(); 
+    }
+```
+
+## High-level multithreading using QtConcurrent
+
