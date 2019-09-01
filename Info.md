@@ -959,4 +959,10 @@ matchTemplate(img, templ, result, TM_CCORR_NORMED);
 ```
  
  # Chapter 8. Multithreading
- 
+ ## Multithreading in Qt
+* QThread - is the base of all threads in the Qt framework. It can be subclassed to create new threads, in which case, you need to override the run method, or you can create new instances of it and move any Qt object (the QObject subclass) into a new thread by calling the moveToThread function.
+* QThreadPool - to manage threads and help reduce thread creation costs by allowing existing threads to be reused for new purposes. Every Qt application contains a global QThreadPool instance that can be accessed by using the QThreadPool::globalInstance() static function. This class is used in conjunction with the QRunnable class instances to control, manage, and recycle runnable objects in a Qt application.
+* QRunnable: This provides another way of creating threads, and it is the base of all runnable objects in Qt. Unlike QThread, QRunnable is not a QObject subclass and is used as an interface for a piece of code that needs to be run. You need to subclass and override the run function to be able to use QRunnable. QRunnable instances are managed by the QThreadPool class.
+* QMutex, QMutexLocker, QSemaphore, QWaitCondition, QReadLocker, QWriteLocker, and QWriteLocke: These classes are used to deal with inter-thread synchronization tasks
+* QtConcurrent: This namespace can be used to create multithreaded applications using a high-level API. 
+* QFuture, QFutureWatcher, QFututeIterator, and QFutureSynchronizer: These classes are all used in conjunction with the QtConcurrent namespace to handle multithreaded and asynchronous operation results.
