@@ -1126,4 +1126,54 @@ another thread will wake this thread(may be wakeOne)
 ```
 
 ## High-level multithreading using QtConcurrent
+### QtConcurrent API
+* filter: This can be used to filter a list. This function to be provided with a list containing the data to be filtered and a filtering function. The filtering function we provide will be applied to each item in the list (using the optimal or a custom number of threads), and, depending on the value returned by the filter function, the item will be removed or kept in the list.
+* filtered: This works the same way as filter, except it the filtered list instead of updating the input list in place.
+* filteredReduced: This works in a way similar to the filtered function, but it also a second function to each item that passes the filter.
+* map: This can be used to apply a specific to all items in a list (using the optimal or a custom number of threads). Quite obviously, and similar to the filter function, the map function also needs to be provided with a list and a function.
+* mapped: This works the same way as map, except it returns the resulting list instead of updating the input list in place.
+* mappedReduced: This works similar to a mapped function, but it also applies a second to each item after the first mapping function.
+* run: This function can be used to easily execute a in a separate thread.
+* QFuture class can be used to retrieve the result of a computation started by one of the functions mentioned in the QtConcurrent namespace; control its work by pausing, resuming, and such methods; and monitor the progress of that computation
+* QFutureWatcher, similar as QFuture but able to use Qt signals and slots
+### example on QConcurrent
+* create widget 
+* in pro file add QtConcurrent as a module
+* implement a function do       doSomeWork(); 
+* add a button and progress bar in ui and in on_button_pressed 
 
+```
+void MainWindow::on_concurrentBtn_pressed() 
+{ 
+QFileInfoList list = getListOfSomeData(); 
+QElapsedTimer elapsedTimer; 
+elapsedTimer.start(); 
+QFuture<void> future = QtConcurrent::map(list, doSomeWork); 
+QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this); 
+connect(watcher, SIGNAL(progressRangeChanged(int,int)), ui->progressBar, SLOT(setRange(int,int)));                                   connect(watcher, SIGNAL(progressValueChanged(int)), ui->progressBar, SLOT(setValue(int))); 
+connect(watcher, &QFutureWatcher<void>::finished, [=]() {  qint64 e = elapsedTimer.elapsed();            QMessageBox::information(this, tr("Done!"), QString(tr("Processed %1 images in %2 milliseconds")) .arg(list.count()) .arg(e)); }); 
+connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater())); 
+watcher->setFuture(future); 
+}
+```
+### QFuture functions
+*    pause
+*    resume
+*    cancel
+*    isStarted
+*    isPaused
+*    isRunning
+*    isFinished
+*    isCanceled
+*    QThreadPool::globalInstance()->setMaxThreadCount(n) 
+
+### examples on filter and filterreduce
+* filter + map
+```
+    QtConcurrent::filter(list, filterImage); 
+    map(list, doSomeWork)
+```
+* filteredReduced
+```
+    QtConcurrent::filteredReduced(list, filterImage, doSomeWork); 
+```
