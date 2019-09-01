@@ -786,6 +786,8 @@ matchTemplate(img, templ, result, TM_CCORR_NORMED);
 ```
 
 # Chapter 7. Features and Descriptors
+* features(keypoint) - some descriptive points on image
+* descriptor - are handles of features that could extracted from image and used to compare with features/descriptors on another image.
 ## Algorithm class - is the base class of almost all algos in openCV
 ```
  class Algorithm 
@@ -824,3 +826,137 @@ matchTemplate(img, templ, result, TM_CCORR_NORMED);
     The detectAndCompute function can be used to perform both detect and compute with a single function.  
     descriptorSize, descriptorType, and defaultNorm are algorithm dependent values and they are reimplemented in eachFeature2D subclass that is capable of extracting descriptors.  
 
+### Detecting features
+* KeyPoint class - is actually another name for feature
+* KeyPoint fields:  
+      pt, or simply point: This contains the position of the keypoint (X and Y) in the image.  
+      angle: This refers to the clockwise rotation (0 to 360 degrees) of the keypoint, that is, if the algorithm detecting the keypoint is capable of finding it; otherwise, it will be set to -1.  
+      response: This is the strength of the keypoint, and it can be used to sort or filter weak keypoints, and so on.  
+      size: This refers to a diameter specifying a neighborhood of the keypoint that can be used for further processing.  
+      octave: This is the octave level (or pyramid level) of the image, from which this specific keypoint was detected.   
+* AgastFeatureDetector - can be used for detection using Adaptive and Generic Accelerated Segment Test algo
+```
+        Ptr<AgastFeatureDetector> agast = AgastFeatureDetector::create(); 
+        vector<KeyPoint> keypoints; 
+        agast->detect(inputImage, keypoints); 
+ ```
+ * drawKeypoints - draws keypoints
+ ```
+     Ptr<AgastFeatureDetector> agast = AgastFeatureDetector::create(); 
+    vector<KeyPoint> keypoints; 
+    agast->detect(inputImage, keypoints); 
+    drawKeypoints(inputImage, keypoints, outputImage); 
+ ```
+ * parameters for agast algo
+      threshold  - The higher the threshold means the lower the number of detected features, and vice versa  
+      NonmaxSuppression - filters unwanted keypoints  
+      type - one of the values AGAST_5_8, AGAST_7_12d, AGAST_7_12s, OAST_9_16  
+ ```
+     Ptr<AgastFeatureDetector> agast =  
+       AgastFeatureDetector::create(); 
+    vector<KeyPoint> keypoints; 
+    agast->setThreshold(ui->agastThreshSpin->value()); 
+    agast->setNonmaxSuppression(ui->agastNonmaxCheck->isChecked()); 
+    agast->setType(ui->agastTypeCombo->currentIndex()); 
+    agast->detect(inputImage, 
+                  keypoints); 
+    drawKeypoints(inputImage, 
+                  keypoints, 
+                  outputImage); 
+  ```
+ ## KAZE and AKAZE(Accelerated KAZE)
+ * Main parameters:  
+      nOctaves the maximum octave levels of an image  
+      nOctaveLayers the number of sub-levels per octave (or per scale level)  
+      Diffusivity may be DIFF_PM_G1, DIFF_PM_G2, DIFF_WEICKERT, DIFF_CHARBONNIER  
+      Threshold  
+      Descriptor Type  on of the following DESCRIPTOR_KAZE_UPRIGHT, DESCRIPTOR_KAZE, DESCRIPTOR_MLDB_UPRIGHT
+      descriptor_size  
+      descriptor_channels  
+ * example: 
+ ```
+       Ptr<AKAZE> akaze = AKAZE::create(); 
+      akaze->setDescriptorChannels(3); 
+      akaze->setDescriptorSize(0); 
+      akaze->setDescriptorType( 
+        ui->akazeDescriptCombo->currentIndex() + 2); 
+      akaze->setDiffusivity(ui->kazeDiffCombo->currentIndex()); 
+      akaze->setNOctaves(ui->kazeOctaveSpin->value()); 
+      akaze->setNOctaveLayers(ui->kazeLayerSpin->value()); 
+      akaze->setThreshold(ui->kazeThreshSpin->value()); 
+      akaze->detect(inputImage, keypoints); 
+    drawKeypoints(inputImage, keypoints, outputImage); 
+```
+## The BRISK(Binary Robust Invariant Scalable Keypoints) class
+```
+    vector<KeyPoint> keypoints; 
+    Ptr<BRISK> brisk = 
+        BRISK::create(ui->briskThreshSpin->value(), 
+                      ui->briskOctaveSpin->value(), 
+                      ui->briskScaleSpin->value()); 
+    drawKeypoints(inputImage, keypoints, outputImage); 
+```
+## FAST (Features from Accelerated Segment Test)
+
+## GFTT (Good Features to Track)
+```
+    vector<KeyPoint> keypoints; 
+    Ptr<GFTTDetector> gftt = GFTTDetector::create(); 
+    gftt->setHarrisDetector(ui->harrisCheck->isChecked()); 
+    gftt->setK(ui->harrisKSpin->value()); 
+    gftt->setBlockSize(ui->gfttBlockSpin->value()); 
+    gftt->setMaxFeatures(ui->gfttMaxSpin->value()); 
+    gftt->setMinDistance(ui->gfttDistSpin->value()); 
+    gftt->setQualityLevel(ui->gfttQualitySpin->value()); 
+    gftt->detect(inputImage, keypoints); 
+    drawKeypoints(inputImage, keypoints, outputImage); 
+```
+
+## ORB  (Oriented BRIEF (Binary Robust Independent Elementary Features) )
+```
+    vector<KeyPoint> keypoints; 
+    Ptr<ORB> orb = ORB::create(); 
+    orb->setMaxFeatures(ui->orbFeaturesSpin->value()); 
+    orb->setScaleFactor(ui->orbScaleSpin->value()); 
+    orb->setNLevels(ui->orbLevelsSpin->value()); 
+    orb->setPatchSize(ui->orbPatchSpin->value()); 
+    orb->setEdgeThreshold(ui->orbPatchSpin->value()); // = patch size 
+    orb->setWTA_K(ui->orbWtaSpin->value()); 
+    orb->setScoreType(ui->orbFastCheck->isChecked() ? 
+                      ORB::HARRIS_SCORE 
+                    : 
+                      ORB::FAST_SCORE); 
+    orb->setPatchSize(ui->orbPatchSpin->value()); 
+    orb->setFastThreshold(ui->orbFastSpin->value()); 
+    orb->detect(inputImage, keypoints); 
+    drawKeypoints(inputImage, keypoints, outputImage); 
+```
+
+## Extracting and matching descriptors
+* DescriptorExtractor is a subclass of Algorithm
+```
+     using namespace cv; 
+      using namespace std; 
+      Mat image1 = imread("image1.jpg"); 
+      Mat image2 = imread("image2.jpg"); 
+      Ptr<AKAZE> akaze = AKAZE::create(); 
+      // set AKAZE params ... 
+      vector<KeyPoint> keypoints1, keypoints2; 
+      akaze->detect(image1, keypoints1); 
+      akaze->detect(image2, keypoints2);         
+      Mat descriptor1, descriptor2; 
+      akaze->compute(image1, keypoints1, descriptor1); 
+      akaze->compute(image2, keypoints2, descriptor2); 
+      descMather = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED); 
+      vector<DMatch> matches; 
+      descMather->match(descriptor1, descriptor2, matches); 
+      drawMatches(image1, 
+                    keypoints1, 
+                    image2, 
+                    keypoints2, 
+                    matches, 
+                    dispImg); 
+```
+ 
+ # Chapter 8. Multithreading
+ 
