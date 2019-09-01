@@ -770,5 +770,57 @@ INTER_LANCZOS4: This is for the Lanczos interpolation over a neighborhood of 8x8
     TM_CCORR_NORMED  
     TM_CCOEFF  
     TM_CCOEFF_NORMED  
+* usage      
+```
+matchTemplate(img, templ, result, TM_CCORR_NORMED); 
+```
+* how to show on the image where is a template
+```
+    double minVal, maxVal; 
+    Point minLoc, maxLoc; 
+    minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc); 
+    rectangle(img, 
+              Rect(maxLoc.x, maxLoc.y, templ.cols, templ.rows), 
+              Scalar(255,255,255), 
+              2); 
+```
 
+# Chapter 7. Features and Descriptors
+## Algorithm class - is the base class of almost all algos in openCV
+```
+ class Algorithm 
+    { 
+      public: 
+      Algorithm(); 
+      virtual ~Algorithm(); 
+      virtual void clear(); 
+      virtual void write(FileStorage& fs) const; 
+      virtual void read(const FileNode& fn); 
+      virtual bool empty() const; 
+      template<typename _Tp> static Ptr<_Tp> read(const FileNode& fn); 
+      template<typename _Tp> static Ptr<_Tp> load(const String& filename, const String& objname=String()); 
+      template<typename _Tp> static Ptr<_Tp> loadFromString(const String& strModel, const String& objname=String()); 
+      virtual void save(const String& filename) const; 
+      virtual String getDefaultName() const; 
+      protected: 
+      void writeFormat(FileStorage& fs) const; 
+    }; 
+```
+* FileStorage - read and write to XML, YAML, JSON
+* FileNode - represent a single element in FileStorage class.
+* read: This has a few overloaded versions that can be used to read the state of an algorithm.
+* write: This is similar to read, except it is used to save the state of an algorithm.
+* clear: This can be used to clear the state of an algorithm.
+* empty: This can be used to determine if an algorithm's state is empty. This means, for example, if it is correctly loaded (read) or not.
+* load: This is almost the same as read.
+* loadFromString: This is quite similar to load and read, except it reads and loads the state of an algorithm from a string.read: This has a few overloaded versions that can be used to read the state of an algorithm.
+
+## The 2D Features Framework
+* Feature2D is a subclass of Algorithm
+* Feature2D has 2 subclasses FeatureDetector and DescriptorExtractor
+* Feature2D methods  
+    The detect function can be used to detect features (or keypoints) from an image or a set of images.  
+    The compute function can be used to extract (or compute) descriptors from keypoints.  
+    The detectAndCompute function can be used to perform both detect and compute with a single function.  
+    descriptorSize, descriptorType, and defaultNorm are algorithm dependent values and they are reimplemented in eachFeature2D subclass that is capable of extracting descriptors.  
 
