@@ -966,3 +966,138 @@ matchTemplate(img, templ, result, TM_CCORR_NORMED);
 * QMutex, QMutexLocker, QSemaphore, QWaitCondition, QReadLocker, QWriteLocker, and QWriteLocke: These classes are used to deal with inter-thread synchronization tasks
 * QtConcurrent: This namespace can be used to create multithreaded applications using a high-level API. 
 * QFuture, QFutureWatcher, QFututeIterator, and QFutureSynchronizer: These classes are all used in conjunction with the QtConcurrent namespace to handle multithreaded and asynchronous operation results.
+
+## QThread subclass example
+* create an application
+* add new class from QObject -> then change to Qthread
+* add two signals to this class
+```
+    void inDisplay(QPixmap pixmap); 
+    void outDisplay(QPixmap pixmap); 
+```
+
+* override it's run method:
+```
+void VideoProcessorThread::run() 
+{ 
+using namespace cv; 
+VideoCapture camera(0); 
+Mat inFrame, outFrame; 
+while(camera.isOpened() && !isInterruptionRequested()) 
+{ 
+camera >> inFrame; 
+if(inFrame.empty()) 
+continue; 
+bitwise_not(inFrame, outFrame); 
+emit inDisplay(QPixmap::fromImage(QImage(inFrame.data,inFrame.cols,inFrame.rows,inFrame.step, QImage::Format_RGB888)               .rgbSwapped())); 
+emit outDisplay(QPixmap::fromImage(QImage(outFrame.data,outFrame.cols,outFrame.rows,outFrame.step,QImage::Format_RGB888) .rgbSwapped())); 
+} 
+}  
+```
+* in mainwindow constructor add
+```
+    VideoProcessorThread processor; 
+    connect(&processor,SIGNAL(inDisplay(QPixmap)),ui->inVideo,SLOT(setPixmap(QPixmap)));  
+    connect(&processor, SIGNAL(outDisplay(QPixmap)),ui->outVideo, SLOT(setPixmap(QPixmap))); 
+    processor.start(); 
+```
+* add in mainwindow destuctor
+```
+    processor.requestInterruption(); 
+    processor.wait(); 
+```
+## important functions
+* start: This can be used to start a thread if it is not already started. 
+* start uses following options:  
+    QThread::IdlePriority (this is scheduled when no other thread is running)  
+    QThread::LowestPriority  
+    QThread::LowPriority  
+    QThread::NormalPriority  
+    QThread::HighPriority  
+    QThread::HighestPriority  
+    QThread::TimeCriticalPriority (this is scheduled as much as possible)  
+    QThread::InheritPriority (this is the default value, which simply inherits priority from the parent)  
+
+## moveToThread function example
+* create an application
+* add new class from QObject 
+* add members to this new class
+```
+    signals: 
+      void inDisplay(QPixmap pixmap); 
+      void outDisplay(QPixmap pixmap); 
+    public slots: 
+      void startVideo(); 
+      void stopVideo(); 
+   private: 
+      bool stopped; 
+```
+* implement     void VideoProcessor::startVideo() in same way as run() from thread example
+* stopVideo to set stopped to true
+* add a private member to mainwindow
+```
+    VideoProcessor *processor; 
+```
+* in mainwindow constructor connect slots with signals
+```
+   processor = new VideoProcessor(); 
+   processor->moveToThread(new QThread(this)); 
+   connect(processor->thread(), SIGNAL(started()), processor, SLOT(startVideo())); 
+   connect(processor->thread(), SIGNAL(finished()), processor, SLOT(deleteLater())); 
+   connect(processor, SIGNAL(inDisplay(QPixmap)), ui->inVideo, SLOT(setPixmap(QPixmap))); 
+   connect(processor, SIGNAL(outDisplay(QPixmap)), ui->outVideo, SLOT(setPixmap(QPixmap))); 
+   processor->thread()->start(); 
+```
+* in mainwindow destructor add: 
+```
+    processor->stopVideo(); 
+    processor->thread()->quit(); 
+    processor->thread()->wait(); 
+```
+
+## Thread synchronization tools
+* QMutex
+```
+    forever 
+    { 
+      imageMutex.lock(); 
+      image = imread("image.jpg"); 
+      imageMutex.unlock(); 
+    } 
+```
+* QMutexLocker
+```
+    forever 
+    { 
+      QMutexLocker locker(&imageMutex); 
+      image = imread("image.jpg"); 
+    } 
+```
+* QReadWriteLock.lockForRead
+* QReadWriteLock.lockForWrite
+```
+    forever 
+    { 
+       lock.lockForRead(); 
+       read_image(); 
+       lock.unlock(); 
+    } 
+```
+* QReadLocker
+```
+    forever 
+    { 
+      QReadLocker locker(&lock); 
+      Read_image(); 
+    }  
+```
+* QSemaphore ( semaphores are used for thread synchronization based on the number of available resources)  
+    acquire: This can be used to acquire a specific amount of resources that are needed. If there are not enough resources, then the thread will be blocked and has to wait until there are enough resources.  
+    release: This can be used to release a specific amount of resources that are already used and not needed anymore.  
+    available: This can be used to get the number of available resources. This function can be used in case we want our threads to perform another task instead of waiting for resources.  
+```
+    QSemaphore memSem(100); 
+    ...
+    memSem.acquire(X); 
+    process_image(); // memory intensive process 
+    memSem.release(X); 
