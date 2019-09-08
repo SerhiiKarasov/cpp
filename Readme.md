@@ -11,6 +11,12 @@
   ```
 
 ## raw pointer 
+* raw pointers and references represent access to an object, but not ownership
+* it is a default way to pass objects to functions/methods
+``` c++
+  std::unique_ptr<House> house = buildAHouse();
+  renderHouse(*house);
+```
 ## std::shared_ptr 
 ## std::weak_ptr 
 ## boost::scoped_ptr
