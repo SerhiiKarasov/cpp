@@ -60,6 +60,11 @@ std::shared_ptr<House> house2 = std::make_shared<House>();;
 house1->neighbour = house2;
 house2->neighbour = house1;
 ```
-
+* may be used to maintain a cache
 ## boost::scoped_ptr
+* scoped_ptr is present in Boost but was not included in the standard (at least as of C++17).
+* It simply disables the copy and even the move construction. So it is the sole owner of a resource, and its ownership cannot be transferred
+* lives only inside of a scope
 ## std::auto_ptr
+* present in C++98, deprecated in C++11, removed in C++17
+* older version of unique_ptr, without move semantics
