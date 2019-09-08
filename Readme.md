@@ -28,14 +28,14 @@
 ``` c++
 void useMyWeakPointer(std::weak_ptr<int> wp)
 {
-if (std::shared_ptr<int> sp = wp.lock())
-9{
-// the resource is still here and can be used
-}
-else
-{
-// the resource is no longer here
-}
+  if (std::shared_ptr<int> sp = wp.lock())
+  {
+    // the resource is still here and can be used
+  }
+  else
+  {
+    // the resource is no longer here
+  }
 }
 ```
 ## boost::scoped_ptr
