@@ -38,5 +38,28 @@ void useMyWeakPointer(std::weak_ptr<int> wp)
   }
 }
 ```
+* typically is used to break circular dependency
+
+``` c++
+struct House
+{
+    std::shared_ptr<House> neighbour;
+};
+```
+vs
+
+``` c++
+struct House
+{
+    std::weak_ptr<House> neighbour;
+};
+```
+``` c++
+std::shared_ptr<House> house1 = std::make_shared<House>();
+std::shared_ptr<House> house2 = std::make_shared<House>();;
+house1->neighbour = house2;
+house2->neighbour = house1;
+```
+
 ## boost::scoped_ptr
 ## std::auto_ptr
