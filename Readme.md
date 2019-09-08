@@ -1,5 +1,7 @@
 # based on the book "Cpp smart pointers"
 
+# Main pointer types
+
 ## std::unique_ptr
 * a sole owner of the memory
 * is a preferred type to be returned from the factory class
@@ -68,3 +70,11 @@ house2->neighbour = house1;
 ## std::auto_ptr
 * present in C++98, deprecated in C++11, removed in C++17
 * older version of unique_ptr, without move semantics
+
+# How to transfer unique_ptr from a set to another set
+* transfer unique ptr to another one is easy:
+``` c++
+std::unique_ptr<int> p1 = std::make_unique<int>(42);
+std::unique_ptr<int> p2 = std::move(p1); // the contents of p1 have been transferred to p2
+```
+* transfer unique ptr from set to set is hard, still in c++17 it is easier
