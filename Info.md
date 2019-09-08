@@ -1183,7 +1183,7 @@ watcher->setFuture(future);
  * main modules QtQuick and QtQML
  * recent version is QT Quick 2
  * QML is declarative readable language that uses Json syntax + scripting
- * example of QML code
+  * example of QML code
  ``` Json
      import QtQuick 2.7 
     import QtQuick.Controls 2.2 
@@ -1196,5 +1196,112 @@ watcher->setFuture(future);
       title: "Hello QML" 
     } 
  ```
- ### How to create Qt quick  application
- * new project -> qt quick controls 2 application
+ * Each import statement must be followed with a QML library name and version
+ * ApplicationWindow in the previous code is the single root element, and all additional UI elements must be created inside it. 
+``` Json
+    ApplicationWindow 
+    { 
+      visible: true 
+      width: 300 
+      height: 500 
+      title: "Hello QML" 
+ 
+      Label 
+      { 
+        x: 25 
+        y: 25 
+        text: "This is a label<br>that contains<br>multiple lines!" 
+      } 
+    } 
+```
+* to use layouts(e.g. ColumnLayout) need to import them
+    ```
+    import QtQuick.Layouts 1.3 
+        ApplicationWindow 
+    { 
+      visible: true 
+      width: 300 
+      height: 500 
+      title: "Hello QML" 
+ 
+      ColumnLayout 
+      { 
+        anchors.fill: parent 
+        Button 
+        { 
+          text: "First Button" 
+          Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter 
+        }  
+      } 
+    } 
+    ```
+* may use anchors, i.e. this says child to fill parent
+```
+    anchors.fill: parent
+```
+*  possible to include another qml file: 
+```
+    import "other_qml_path" 
+```
+* user interraction with qml, signal OnPressed(or any other slots, refer to qml docs)
+```
+    Button 
+    { 
+      onPressed:  
+      { 
+        // code goes here 
+        mainWindow.close() 
+      } 
+    } 
+```
+
+### qt quick designer
+* works with qml files 
+
+### qt quick application
+ * How to create Qt quick  application  new project -> qt quick controls 2 application
+ * choose ui, among default, material, universal
+ * configuration of ui is also available at qtquickcontrols2.conf, in this file semicolon means comment
+* application configuration is in .pro file
+* main.cpp
+``` cpp
+    #include <QGuiApplication> 
+    #include <QQmlApplicationEngine> 
+ 
+    int main(int argc, char *argv[]) 
+    { 
+      QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
+      QGuiApplication app(argc, argv); 
+ 
+      QQmlApplicationEngine engine; 
+      engine.load(QUrl(QLatin1String("qrc:/main.qml"))); 
+      if (engine.rootObjects().isEmpty()) 
+        return -1; 
+ 
+      return app.exec(); 
+    }
+```
+* main.qml, is a file loaded by main.cpp
+* in main.qml we may import other qml files, it is also a good idea to split ui elements and scripting in different filese(e.g. Page1.qml and Page1Form.ui.qml)
+* integrate qt c++ code with qml  
+ - add new class  
+ - public methods should be Q_INVOKABLE(QT MACRO for functin to be called using Qt Meta Object system, QML uses QMO for internal communication)  
+ ``` c++
+     Q_INVOKABLE void processImage(const QString &path);
+ ```  
+  - register your class in main.cpp  
+ ``` c++
+      qmlRegisterType<QImageProcessor>("com.skarasov.classes", 1, 0, "ImageProcessor"); 
+```
+ - import class to main.cpp  
+``` c++
+    #include "qimageviewer.h" 
+```  
+- import your class in main.qml
+```
+    import QtQuick 2.7 
+    import QtQuick.Controls 2.0 
+    import QtQuick.Layouts 1.3 
+    import QtMultimedia 5.8 
+    import com.skarasov.classes 1.0 
+```
