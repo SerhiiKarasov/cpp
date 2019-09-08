@@ -1177,3 +1177,24 @@ watcher->setFuture(future);
 ```
     QtConcurrent::filteredReduced(list, filterImage, doSomeWork); 
 ```
+
+# Chapter 12. Qt Quick Applications
+
+ * main modules QtQuick and QtQML
+ * recent version is QT Quick 2
+ * QML is declarative readable language that uses Json syntax + scripting
+ * example of QML code
+ ``` Json
+     import QtQuick 2.7 
+    import QtQuick.Controls 2.2 
+ 
+    ApplicationWindow 
+    { 
+      visible: true 
+      width: 300 
+      height: 500 
+      title: "Hello QML" 
+    } 
+ ```
+ ### How to create Qt quick  application
+ * new project -> qt quick controls 2 application
