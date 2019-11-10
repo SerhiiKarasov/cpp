@@ -9,6 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: go to folder
+      run: cd ImageMounterPOC
     - name: make_build_dir
       run: mkdir build
     - name: run_cmake
