@@ -9,9 +9,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: go to folder
-      run: cd ImageMounterPOC
     - name: make_build_dir
-      run: mkdir build
+      run: mkdir 105_stl_algos/build
     - name: run_cmake
-      run: cd build && echo $PWD && cmake .. && cmake --build .
+      run: cd 105_stl_algos/build && echo $PWD && cmake .. && cmake --build .
