@@ -22,3 +22,13 @@ int main()
 ```
 # Memory corruption
 * option -Wunitialized prevents unitialized memory from being used
+* out-of-bounds memory corruption errors fall in two categories:
+      * object-based, i.e. when a pointer is used to access target memory;
+      * pointer-based, i.e. when the target address is out-of-bounds.
+* tools
+      * valgrind memcheck
+      * kmemcheck uses shadow memory to monitor allocated memory, supports only heap
+      * MemorySanitizer is a detector of unitialized read. Consists of compiler and run-time lib. If an error occurs -> prints error message. 
+      * AddressSanitizer check for usage of freed or out-of-bounds memory  
+      * DieHard, DieHarder allow for avoiding memory reuse by use of special allocators
+      * DangNull uses pointer nullification to eliminate pointer dangling.
