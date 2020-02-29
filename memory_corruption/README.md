@@ -34,3 +34,7 @@ int main()
       * DangNull uses pointer nullification to eliminate pointer dangling.
       * FreeSentry  doesn't change ptr repr., 
       
+# Classification of memory corruptions
+* buffer overflow - data can be overwritten, hacker cannot control on destination address, hacker can control input data(size and source address)
+* arbitrary write - hacker has full control on destination address and input data(size and source address)
+* of-by-one - data can be overwritten(usually limited by one element of array), hacker cannot control on destination address, hacker can control input data(only source address)
