@@ -21,7 +21,7 @@ int main()
 }
 ```
 # Memory corruption
-* option -Wunitialized prevents unitialized memory from being used
+* option -Wunitialized prevents unitialized memory from being used (https://gcc.gnu.org/wiki/Better_Uninitialized_Warnings)
 * out-of-bounds memory corruption errors fall in two categories:
       * object-based, i.e. when a pointer is used to access target memory;
       * pointer-based, i.e. when the target address is out-of-bounds.
@@ -32,3 +32,5 @@ int main()
       * AddressSanitizer check for usage of freed or out-of-bounds memory  
       * DieHard, DieHarder allow for avoiding memory reuse by use of special allocators
       * DangNull uses pointer nullification to eliminate pointer dangling.
+      * FreeSentry  doesn't change ptr repr., 
+      
