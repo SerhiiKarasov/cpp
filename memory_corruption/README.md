@@ -38,3 +38,13 @@ int main()
 * buffer overflow - data can be overwritten, hacker cannot control on destination address, hacker can control input data(size and source address)
 * arbitrary write - hacker has full control on destination address and input data(size and source address)
 * of-by-one - data can be overwritten(usually limited by one element of array), hacker cannot control on destination address, hacker can control input data(only source address)
+### buffer overflows
+* on stack: local variables, metadate(framepointer, stackpointer)
+* heap: dyn allocated memory
+* global memory: global variables and structure
+
+### stack
+* LIFO
+* suports push/pop
+* stack pointer points to the next available memory(push - appends elements, and decrements SP, pop - removes element, increments SP)
+* each thread has runtime stack (aka call stack, program stack) - it stores local variables, tracks  call chain of functions. Each function has its own part of whole stack - stack frame, when functions are called stack frames are poped/pushed.
