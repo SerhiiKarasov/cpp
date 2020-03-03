@@ -48,3 +48,14 @@ int main()
 * suports push/pop
 * stack pointer points to the next available memory(push - appends elements, and decrements SP, pop - removes element, increments SP)
 * each thread has runtime stack (aka call stack, program stack) - it stores local variables, tracks  call chain of functions. Each function has its own part of whole stack - stack frame, when functions are called stack frames are poped/pushed.
+
+### stack anatomy
+Every stack frame has three components:
+* PC - program counter , to remember where to continue execution after function returns
+* FP - frame pointer to remember the base address of calling function's stack frame
+* local variables, to store data controlled by the function
+### risk with stack corruption
+* stack's local variables
+* prev stack's local variables
+* frame pointer - FP
+* frame counter - FC
