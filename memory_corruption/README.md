@@ -59,3 +59,23 @@ Every stack frame has three components:
 * prev stack's local variables
 * frame pointer - FP
 * frame counter - FC
+
+### heap
+* when malloc()(example) is called  - the top chunk is reserved for it(on most archs it's lowest addresses), when this memory is deallocated system should mark the memory as free -> via metadata. 
+* when a block of memory is returned to the user it is preceeded by a header. Header describes(size of the current block, size of the previous block,whether the current block is free, optionally some other flags)
+* having control over heap it is not possible to overwrite the return address. But possible to corrupt application specific memory, heap metdata. 
+
+### data segment and bss buffer overflow
+* global variables can be in bss or in data section. Bss section contains all global and static variables that are initiliazed with zero or are not initialized. Data section containers all initialized static variables. Data segment doesnot change in runtime. 
+
+### arbitrary write
+* ability to write to heap, stack, bss, data
+
+### Off-by-one 
+* reason may be: termination element is not taken into consideration, array index missunderstood, nconfusin between size of array and the index of last element 
+* c-style strings, strcpy() copies null terminator, strlen() doesn't include that
+ 
+ ### Secure coding standards
+ * MISRA C
+ * CERT C
+ * ISO/IEC TS 17691
