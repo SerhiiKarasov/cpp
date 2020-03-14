@@ -72,3 +72,10 @@ Every stack frame has three components:
 * ability to write to heap, stack, bss, data
 
 ### Off-by-one 
+* reason may be: termination element is not taken into consideration, array index missunderstood, nconfusin between size of array and the index of last element 
+* c-style strings, strcpy() copies null terminator, strlen() doesn't include that
+ 
+ ### Secure coding standards
+ * MISRA C
+ * CERT C
+ * ISO/IEC TS 17691
