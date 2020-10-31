@@ -1,0 +1,40 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install py dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install  cmake_format cpplint pyyaml
+      - name: Install cpp dependencies
+        run: |
+          sudo apt-get upgrade
+          sudo apt-get install cppcheck cmake gcc clang clang-tools clang-tidy
+      - name: make_build_dir
+        run: mkdir cpp_task_queue/build
+      - name: run_cmake
+        run: cd cpp_task_queue/build && echo $PWD && cmake .. && cmake --build .
+      - name: cmake_format
+        run: python3 -m cmakelang.format -c cpp_task_queue/.cmake-format.yaml --check cpp_task_queue/CMakeLists.txt cpp_task_queue/src/CMakeLists.txt
+      - name: cppcheck-ver
+        run: cppcheck --version
+      - name: cppcheck
+        run: cppcheck --error-exitcode=0 --force --include=/usr/include --suppress=missingIncludeSystem --enable=all cpp_task_queue/src/
+      - name: cpplint
+        run: python3 -m cpplint --filter=-whitespace,-readability,-legal,-build/include_order cpp_task_queue/src/*pp
+      - name: clang-tidy
+        run: clang-tidy -p build/-header-filter=.* -extra-arg=-std=c++17 -checks=*,-fuchsia-overloaded-operator,-llvm-header-guard,-llvm-include-order,-google-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-fuchsia-default-arguments,-fuchsia-trailing-return  cpp_task_queue/src/*pp
