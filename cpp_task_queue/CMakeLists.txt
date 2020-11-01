@@ -1,3 +1,7 @@
 project(tasks_queue LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.17)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_17)
 add_subdirectory(src)
