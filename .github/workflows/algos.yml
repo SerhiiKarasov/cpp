@@ -1,0 +1,18 @@
+name: C/C++ CI Algo
+
+on:
+  push:
+    paths:
+      - "105_stl_algos//**"
+      - ".github/workflows/algos.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: make_build_dir
+        run: mkdir 105_stl_algos/build
+      - name: run_cmake
+        run: cd 105_stl_algos/build && echo $PWD && cmake .. && cmake --build .

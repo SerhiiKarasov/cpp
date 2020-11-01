@@ -1,0 +1,1 @@
+# example of usage of boost::lockfree::queue(multi-writer/multi-reader queue)

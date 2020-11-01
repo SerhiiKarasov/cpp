@@ -1,0 +1,7 @@
+project(boost_tasks_queue LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.14)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_14)
+add_subdirectory(src)
