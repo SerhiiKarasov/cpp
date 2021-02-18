@@ -2,7 +2,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-add_library(${PROJECT_NAME}_lib Queue.cpp Queue.hpp Storage.cpp Storage.hpp)
+add_library(${PROJECT_NAME}_lib TaskQueue.cpp TaskQueue.hpp Storage.cpp Storage.hpp)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_lib PRIVATE -Werror -Wall -Wextra)
