@@ -128,14 +128,23 @@ Integer operator+(int x, const Integer &y)
 
 std::ostream &operator<<(std::ostream &out, const Integer &a)
 {
+  std::cout << "std::ostream &operator<<(std::ostream &out, const Integer &a)" << std::endl;
+
   out << a.GetValue();
   return out;
 }
 
 std::istream &operator>>(std::istream &input, Integer &a)
 {
+  std::cout << "std::istream &operator>>(std::istream &input, Integer &a)" << std::endl;
   int x;
   input >> x;
   a.SetValue(x);
   return input;
+}
+
+Integer::operator int()
+{
+  std::cout << "Integer::operator int()" << std::endl;
+  return *m_pInt;
 }

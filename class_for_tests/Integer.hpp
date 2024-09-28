@@ -37,6 +37,8 @@ public:
 
   int GetValue() const;
   void SetValue(int value);
+
+  explicit operator int();
 };
 
 Integer operator+(int x, const Integer &y);
